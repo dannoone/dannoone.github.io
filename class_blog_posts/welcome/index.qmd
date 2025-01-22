@@ -1,0 +1,13 @@
+---
+title: "Welcome All!"
+author: "Daniel Noone"
+date: "12/09/2023"
+categories: [welcome message]
+---
+
+Welcome to my blog powered by Quarto and GitHub!!
+
+![](dataimg.jfif)
+
+As a Data Analytics major, it is helpful to hone my abilities by doing exploratory data analysis.
+With that, I will be posting little projects here and there on my website, feel free to take a look!

@@ -1,0 +1,486 @@
+---
+title: DANL 200 Project
+subtitle: "Air Quality Data as per the EPA regarding Criteria Air Pollutants"
+author: Daniel Noone
+date: "01/28/2024"
+categories: [Climate, Air Quality, EPA]
+image: 'smog.webp' 
+
+toc: true
+toc-title: "Table of Contents"
+toc-depth: 2
+number-sections: true
+
+fig-width: 9
+
+execute:
+  code-tools: true
+  message: false
+  warning: false
+
+from: markdown+emoji
+---
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+library(viridisLite)
+
+
+
+
+theme_set(theme_ipsum()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(10,0,0,0)),
+                axis.title.y = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(0,10,0,0))
+                )
+          )
+```
+
+
+# The `Air Quality` Data Sets:
+
+  - These data sets were obtained from the EPA website [here](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Daily)
+  
+  - These data sets (four in total) measure daily levels of four different gases in different locations
+    - The gases measured are Ozone, SO2 (sulfur dioxide), CO (carbon monoxide), and NO2 (nitrogen dioxide)
+    - These gases play a large role in the measurement of the Air Quality Index (AQI)
+    - They are considered to be atmospheric pollutants
+    - More information on Criteria Air Pollutants can be found [here](https://www.epa.gov/sites/default/files/2015-10/documents/ace3_criteria_air_pollutants.pdf)
+    
+  - This project will take a look at and analyze the measurements of these four atmospheric gases per state
+    - These measurements were taken from `01/01/2023` to `09/30/2023`
+  
+  
+## Loading the data sets
+
+```{r}
+ozone <- read.csv("C:\\Users\\Dan\\OneDrive\\Documents\\dan-noone.github.io\\posts2\\DANL200 Project\\ozone_measures.csv")
+
+so2 <- read.csv("C:\\Users\\Dan\\OneDrive\\Documents\\dan-noone.github.io\\posts2\\DANL200 Project\\so2_measures.csv")
+
+co <- read.csv("C:\\Users\\Dan\\OneDrive\\Documents\\dan-noone.github.io\\posts2\\DANL200 Project\\co_measures.csv")
+
+no2 <- read.csv("C:\\Users\\Dan\\OneDrive\\Documents\\dan-noone.github.io\\posts2\\DANL200 Project\\no2_measures.csv")
+
+```
+
+```{r}
+rmarkdown::paged_table(ozone)
+rmarkdown::paged_table(so2)
+rmarkdown::paged_table(co)
+rmarkdown::paged_table(no2)
+```
+
+## Altering the Four Data Sets
+
+  - The data sets include a lot of information that is not needed for my analysis
+    - Here I will alter the data sets to include only the information of importance
+    - The data sets will then be row bound using rbind() to create a single data set from the four
+  
+  - For the purpose of continuity, the top 10 most frequent states in `ozone` data set will also be selected in the other three data sets
+
+### The `ozone` data set to the `ozone_alt` data set
+```{r}
+st_top10_oz <- ozone %>% 
+  group_by(State.Name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  head(10) %>% 
+  mutate(state_fct = reorder(State.Name, n))
+
+ozone_alt <- ozone %>% 
+  select(State.Name, Date.Local, Parameter.Name, Units.of.Measure, Arithmetic.Mean) %>% 
+  filter(State.Name %in% st_top10_oz$state_fct) %>% 
+  rename(Measure = Arithmetic.Mean)
+View(ozone_alt)
+```
+
+
+ - The new data set `ozone_alt` includes data for only the 10 most prevalent states in the `ozone` data set
+ 
+```{r}
+rmarkdown::paged_table(st_top10_oz)
+rmarkdown::paged_table(ozone_alt)
+```
+
+
+### The `so2` data set to the `so2_alt` data set
+```{r}
+st_top10_so2 <- so2 %>% 
+  filter(State.Name %in% st_top10_oz$State.Name) %>%
+  group_by(State.Name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  mutate(state_fct = reorder(State.Name, n))
+
+so2_alt <- so2 %>% 
+  select(State.Name, Date.Local, Parameter.Name, Units.of.Measure, Arithmetic.Mean) %>% 
+  filter(State.Name %in% st_top10_so2$state_fct) %>% 
+  rename(Measure = Arithmetic.Mean)
+```
+
+
+- The new data set `so2_alt` includes data for again, only the 10 most prevalent states in the `ozone` data set
+
+```{r}
+rmarkdown::paged_table(st_top10_so2)
+rmarkdown::paged_table(so2_alt)
+```
+
+
+### The `co` data set to the `co_alt` data set
+```{r}
+st_top10_co <- co %>% 
+  filter(State.Name %in% st_top10_oz$State.Name) %>% 
+  group_by(State.Name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  mutate(state_fct = reorder(State.Name, n))
+
+co_alt <- co %>% 
+  select(State.Name, Date.Local, Parameter.Name, Units.of.Measure, Arithmetic.Mean) %>% 
+  filter(State.Name %in% st_top10_co$state_fct) %>% 
+  rename(Measure = Arithmetic.Mean)
+```
+
+```{r}
+rmarkdown::paged_table(st_top10_co)
+rmarkdown::paged_table(co_alt)
+```
+
+
+### The `no2` data set to the `no2_alt` data set
+```{r}
+st_top10_no2 <- no2 %>% 
+  filter(State.Name %in% st_top10_oz$State.Name) %>% 
+  group_by(State.Name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  mutate(state_fct = reorder(State.Name, n))
+
+no2_alt <- no2 %>% 
+  select(State.Name, Date.Local, Parameter.Name, Units.of.Measure, Arithmetic.Mean) %>% 
+  filter(State.Name %in% st_top10_no2$state_fct) %>% 
+  rename(Measure = Arithmetic.Mean)
+```
+
+```{r}
+rmarkdown::paged_table(st_top10_no2)
+rmarkdown::paged_table(no2_alt)
+```
+
+
+## Binding all four data sets (`ozone_alt`, `so2_alt`, `co_alt`, and `no2_alt`) to create the `air_qual` data set
+
+  - Since the variables are the same, all four data sets can be row bound together using `rbind()`
+```{r}
+air_qual <- rbind(ozone_alt, so2_alt, co_alt, no2_alt)
+rmarkdown::paged_table(air_qual)
+```
+
+
+# Analyzing the Measurments of the gases in `Parameter.Name` per each `State.Name` Value
+
+  - In this section, using the altered and consolidated set, the data is looked at closer and analyzed further
+
+## Description of the Variables
+
+  - `State.Name`: A character variable whose values are one of the 10 states most frequent in the `ozone` data set
+    1. Arizona
+    2. California
+    3. Colorado
+    4. Florida
+    5. Illinois
+    6. Indiana
+    7. Ohio
+    8. Pennsylvania
+    9. Texas
+    10. Utah
+    
+  - `Date.Local`: The date the measurement of the atmospheric gas was taken
+  
+  - `Parameter.Name`: The atmospheric gas being measured
+  
+  - `Units.of.Measure`: Units in which the atmospheric gas was measured
+  
+    - Parts Per Million : Ozone, Carbon Monoxide
+    - Parts Per Billion : Sulfur Dioxide, Nitrogen Dioxide
+  
+  - `Measure`: The mean measurement of the gas in the units provided in `Units.of.Measure`
+
+## Distribution of each value of `State.Name` per value of `Parameter.Name`
+
+  - The distribution of each state in the ten provided, per each atmospheric gas being measured
+  
+```{r}
+air_qual_state_dist <- air_qual %>% 
+  group_by(State.Name, Parameter.Name) %>% 
+  summarise(n = n())
+View(air_qual_state_dist)
+
+ggplot(data = air_qual_state_dist)+
+  geom_bar(aes(y = State.Name, x = n, fill = State.Name), stat = 'identity')+
+  facet_wrap(.~Parameter.Name)+
+  theme_gray()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  labs(title = 'State Distribution per Gas',
+       x = 'Count',
+       y = 'State')
+```
+
+
+__Analyses__
+
+  - Depicted in the above figure is a faceted bar chart depicting the count of each state in which each atmospheric gas was measured
+  
+    - It seems as though carbon monoxide (CO), nitrogen dioxide (NO2), and ozone were measured most often in California
+    - Sulfur dioxide (SO2) was measured most frequently in Ohio and secondly in Texas
+
+
+## The average measurement of the `OZONE` measurement per each `State.Name` value
+
+  - The average measurement of ozone in parts per million (ppm) per each state in the top ten most frequent
+
+
+```{r}
+ozone_alt_per_state <- ozone_alt %>% 
+  group_by(State.Name) %>% 
+  summarise(mean_ppm = mean(Measure)) %>% 
+  mutate(state_fct = reorder(State.Name, mean_ppm))
+
+ggplot(data = ozone_alt_per_state)+
+  geom_bar(aes(y = state_fct, x = mean_ppm, fill = state_fct), stat = 'identity')+
+  theme_dark()+
+  labs(title = 'Ozone Levels in ppm per State',
+       x = ' Mean ppm Value',
+       y = 'State',
+       fill = 'State')+
+  scale_fill_viridis_d(option = 'inferno')
+```
+
+
+__Analyses__
+
+  - In the bar chart shown above depicts a decent variation in Ozone levels between the 10 states
+    - Texas, Florida, and California seem to have the lowest levels of Ozone
+      - Colorado, Utah, and Arizona seem to have the highest levels of Ozone
+      
+
+## The average measurement of the `SULFUR DIOXIDE` measurment per each `State.Name` value
+
+  - The average measurment of sulfur dioxide (SO2) in parts per billion (ppb) per each state in the top ten most frequent
+  
+
+```{r}
+so2_alt_per_state <- so2_alt %>% 
+  group_by(State.Name) %>% 
+  summarise(mean_ppb = mean(Measure)) %>% 
+  mutate(state_fct = reorder(State.Name, mean_ppb))
+
+ggplot(data = so2_alt_per_state)+
+  geom_bar(aes(x = mean_ppb, y = state_fct, fill = state_fct), stat = 'identity')+
+  theme_dark()+
+  labs(title = 'Sulfur Dioxide Levels in ppb per State',
+       x = 'Mean ppb Value',
+       y = 'State',
+       fill = 'State')+
+  scale_fill_viridis_d(option = 'inferno')
+```
+
+
+__Analyses__
+
+  - There seems to be even greater variation between each of the state's Sulfur Dioxide (SO2) levels
+    - California, Arizona, and Ohio seem to have the lowest levels of SO2
+      - Colorado, Texas, and Utah seem to have the highest levels of SO2
+
+
+## The average measurement of the `CARBON MONOXIDE` measurment per each `State.Name` value
+
+  - The average measurment of carbon monoxide (CO) in parts per million (ppm) per each state in the top ten most frequent
+
+
+```{r}
+co_alt_per_state <- co_alt %>% 
+  group_by(State.Name) %>% 
+  summarise(mean_ppm = mean(Measure)) %>% 
+  mutate(state_fct = reorder(State.Name, mean_ppm))
+
+ggplot(data = co_alt_per_state)+
+  geom_bar(aes(x = mean_ppm, y = state_fct, fill = state_fct), stat = 'identity')+
+  theme_dark()+
+  labs(title = 'Carbon Monoxide Levels in ppm per State',
+       x = 'Mean ppm Value',
+       y = 'State',
+       fill = 'State')+
+  scale_fill_viridis_d(option = 'inferno')
+```
+
+
+__Analyses__
+
+  - In the bar chart, there seems to be less variation in Carbon Monoxide (CO) levels as compared to Sulfur Dioxide (SO2)
+    - Utah, Ohio, and Illinois seem to have the lowest levels of CO
+      - Indiana, Florida, and Pennsylvania seem to have the highest levels of CO
+    
+    
+## The average measurement of the `NITROGEN DIOXIDE` measurment per each `State.Name` value
+
+  - The average measurement of nitrogen dioxide (NO2) in parts per billion (ppb) per each state in the top ten most frequent
+
+
+```{r}
+no2_alt_per_state <- no2_alt %>% 
+  group_by(State.Name) %>% 
+  summarise(mean_ppb = mean(Measure)) %>% 
+  mutate(state_fct = reorder(State.Name, mean_ppb))
+
+ggplot(data = no2_alt_per_state)+
+  geom_bar(aes(x = mean_ppb, y = state_fct, fill = state_fct), stat = 'identity')+
+  theme_dark()+
+  labs(title = 'Nitrogen Dioxide Levels in ppb per State',
+       x = 'Mean ppb Value',
+       y = ' State',
+       fill = 'State')+
+  scale_fill_viridis_d(option = 'inferno')
+```
+
+
+__Analyses__
+
+  - The variation of Nitrogen Dioxide (NO2) seems to be similar to that of Sulfur Dioxide (SO2)
+    - Indiana, Texas, and Utah seem to have the lowest levels of NO2
+      - Arizona, Illinois, and Colorado seem to have the highest levels of NO2
+
+
+# Summary of The Measurements of the Criteria Atmospheric Gases per Top 10 State
+
+  - Depicted below are more consolidated bar charts depicted the levels of each gas per top 10 state
+    - Two faceted bar charts are shown since the gases are measured in different units (ppm & ppb)
+
+```{r}
+air_qual_ppm <- air_qual %>% 
+  filter(Parameter.Name == 'Ozone' | Parameter.Name == 'Carbon monoxide') %>% 
+  group_by(State.Name, Parameter.Name) %>% 
+  summarise(mean_ppm = mean(Measure))
+
+View(air_qual_ppm)
+air_qual_ppb <- air_qual %>%
+  filter(!(Parameter.Name == 'Ozone' | Parameter.Name == 'Carbon monoxide')) %>% 
+  group_by(State.Name, Parameter.Name) %>% 
+  summarise(mean_ppb = mean(Measure))
+```
+
+
+Depicted below are the values of `Parameter.Name` that are meaured in parts per million (ppm)
+```{r}
+ggplot(data = air_qual_ppm)+
+  geom_bar(aes(x = mean_ppm, y = State.Name, fill = State.Name), stat = 'identity')+
+  facet_wrap(Parameter.Name ~ ., scales = 'free_x')+
+  theme_dark()+
+  labs(fill = 'State',
+       title = 'Levels of PPM Measured Criteria Gases per State',
+       x = 'Mean ppm Value',
+       y = 'State')
+```
+
+
+Depicted below are the values of `Parameter.Name` that are measured in parts per billion (ppb)
+```{r}
+ggplot(data = air_qual_ppb)+
+  geom_bar(aes(x = mean_ppb, y = State.Name, fill = State.Name), stat = 'identity')+
+  facet_wrap(.~Parameter.Name, scales = 'free_x')+
+  theme_dark()+
+  labs(fill = 'State',
+       title = 'Levels of PPB Measured Criteria Gases per State',
+       x = 'Mean ppb Value',
+       y = 'State')
+  
+```
+
+
+## What do these levels even mean?
+
+  - These four gases (Ozone, SO2, CO, and NO2) are considered to be [Criteria Air Pollutants](https://www.epa.gov/sites/default/files/2015-10/documents/ace3_criteria_air_pollutants.pdf) by the EPA
+    - Being __Criteria Air Pollutants__ (along with Lead (Pb), and Particulate Matter (PM)), they pose adverse health and environmental effects.
+
+![](smog.webp)  
+
+
+### Ozone
+
+  - Ground-level ozone (as measured in the data), comes from reaction between pollutants
+  
+    - These pollutants are emitted by industrial facilities, electric utilities, and motor vehicles
+    
+  - This Ground-level ozone (in contrast with ozone that protects from UV rays), can pose health risks
+  
+    - These health risks include...
+    
+      - Inflammation of lining of the lungs
+      - Reduced lung function
+      - Cough, wheezing, chest pain, shortness of breath
+      - Increased susceptibility to respiratory infection, and
+      - Premature mortality, to name a few.
+  
+  __Analyses Pertaining to the Data__:
+  
+  - For the states such as Colorado, Utah, and Arizona some of these health effects could potentially be more frequent
+    - However, in states such as Texas, Florida, and California these health effects will most likely not be as prevalent
+      
+      
+### Sulfur Dioxide (SO2)
+
+  - This air pollutant comes primarily from fossil fuel combustion by industrial and electrical facilities
+  
+  - Short-term exposure by asthmatic individuals may result in...
+  
+    - Wheezing
+    - Chest Tightness
+    - Shortness of Breath
+    - Etc...
+    
+  - Mostly affects the respiratory system
+
+  __Analyses Pertaining to the Data__:
+  
+  - Colorado would most likely experience the highest frequency of these health effects as the average measure of SO2 over the time frame is almost double that of Texas (the state with the second highest measurement)
+    - California is the state with the lowest average level of SO2, and would most likely see the least health effects
+
+
+### Carbon Monoxide (CO)
+
+  - The primary source of Carbon Monoxide is found to be fuel propelled means of transportation
+  
+  - Primary health risks as a result of exposure are...
+  
+    - Decreased capacity of blood to carry oxygen
+      - Which can cause _myocardial ischemia_ (reduced oxygen to heart)
+      - and _angina_ (chest pain)
+
+  __Analyses Pertaining to the Data__:
+  
+  - States such as Indiana, Florida, and Pennsylvania which had the highest average levels of CO, would most likely see the highest frequency of health effects
+    - Utah, which had the lowest average level of CO (almost half the average level of Indiana), would most likely experience the lowest frequency of health effects
+
+### Nitrogen Dioxide (NO2)
+
+  - Primarily emitted from cars, trucks, buses, power plants, and other engines/equipment
+  
+    - Nitrogen Oxide (NO) is emitted first and then rapidly oxidized into NO2 in the atmosphere
+    
+  - Health risks include mostly respiratory related symptoms and hospital visits
+  
+  __Analyses Pertaining to the Data__:
+  
+  - States such as Arizona and Illinois had the highest average level of NO2 recorded, so they would most likely experience the highest frequency of these health effects
+    - States such as Utah and Texas had an average recorded level of NO2 about half that of Arizona and Illinois, and would most likely experience the lowest frequency of health effects

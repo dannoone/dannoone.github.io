@@ -1,0 +1,170 @@
+---
+title: "Spotify Listener Data"
+author: "Daniel Noone"
+date: "12/11/2023"
+categories: [music, artists, data exploration]
+image: 'spotify.jfif'
+
+execute: 
+  warning: false
+  message: false
+  
+toc: true
+---
+
+---
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+
+theme_set(theme_ipsum()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(10,0,0,0)),
+                axis.title.y = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(0,10,0,0))
+                )
+          )
+```
+
+
+# Analyzing the `spotify` Data Frame:
+
+```{r}
+spotify <- read.csv('https://bcdanl.github.io/data/spotify_all.csv')
+```
+
+```{r}
+rmarkdown::paged_table(spotify)
+```
+
+## Description of Variables for `spotify` Data Frame:
+
+  - `pid`: A unique ID for a specific playlist
+
+  - `playlist_name`: The name of a specific playlist
+
+  - `pos`: Position of the track within a playlist (starting from 0)
+
+  - `artist_name`: Name of the artist on the track
+
+  - `track_name`: name of the track
+
+  - `duration_ms`: duration of the track (in milliseconds)
+
+  - `album_name`: name of the track’s album
+  
+## Summary Statistics for `spotify`:
+
+```{r}
+skim(spotify)
+```
+
+# Relationships:
+
+## Top 5 Artists in `artist_name`
+
+```{r}
+spot1 <- spotify %>% 
+  group_by(artist_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  head(5) %>% 
+  mutate(prop = n/sum(n),
+         art_fct = reorder(artist_name, prop))
+View(spot1)
+
+ggplot(data = spot1)+
+  geom_bar(aes(x = art_fct, y = prop, fill = artist_name), stat = 'identity')+
+  theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5))+
+  ggtitle('Frequency of Top 5 Artists')+
+  xlab('Artist Name')+
+  ylab('Proportion')
+length(unique(spotify$artist_name))
+```
+
+#### Comments on analyses...
+
+  - Out of the 18866 different artist names in the `spotify` data frame, the top five are...
+    1. Drake
+    2. Kanye West
+    3. Kendrick Lamar
+    4. Rihanna
+    5. The Weeknd
+    
+      - These are also in order of greatest to least frequency out of the top 5*
+
+## Top 5 songs in `track_name`
+
+```{r}
+spot2 <- spotify %>% 
+  group_by(track_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  head(5) %>% 
+  mutate(prop = n/sum(n),
+         track_fct = reorder(track_name, prop))
+
+ggplot(data = spot2)+
+  geom_bar(aes(x = track_fct, y = prop), stat = 'identity', fill = 'blue')+
+  theme(axis.text.x=element_text(angle=45,hjust=1,vjust=0.5))+
+  ggtitle('Top 5 Songs')+
+  xlab('Song Name')+
+  ylab('Proportion')
+length(unique(spotify$track_name))
+```
+
+
+#### Comments on analyses...
+
+  - There are a total of 64115 unique values in `track_name` 
+  - Out of those 64115 values, the top 5 are...
+    1. Closer
+    2. One Dance
+    3. HUMBLE
+    4. Home
+    5. Roses
+    
+      - In order of decreasing proportion within the top 5 songs*
+    
+## Most Popular Song in `track_name` for Each of the Top 5 Artists in `artist_name` 
+
+
+```{r}
+spot3 <- spotify %>% 
+  filter(artist_name %in% spot1$art_fct) %>% 
+  group_by(artist_name, track_name) %>% 
+  summarise(n = n())
+spot3.5 <- spot3 %>% 
+  group_by(artist_name) %>% 
+  slice_max(order_by = n, n = 1) %>%  #Selects the top n value for each value of artist, the top n rows of top n values
+  ungroup() %>% 
+  arrange(-n)
+  
+ggplot(data = spot3.5) + 
+  geom_bar(aes(x = artist_name, y = n, fill = track_name), stat = 'identity')+
+  labs(title = 'Most Popular Song For Each Top 5 Artist',
+       x = 'Artist',
+       y = 'Count')+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+```
+
+
+#### Comments on analyses...
+
+  - Above is the top song`track_name` value and it's count in the `spotify` data frame for each of the top 5 values of `artist_name`
+    - Drake : One Dance
+    - Kanye West : GOLD DIGGER
+    - Kendrick Lamar : HUMBLE
+    - Rihanna : Needed Me
+    - The Weeknd : Starboy
+
+

@@ -1,0 +1,17 @@
+---
+title: "Web Scraping using Beautiful Soup"
+subtitle: 'From a tutorial on YouTube'
+author: 'Daniel Noone'
+date: '02-09-2024'
+categories: [Python, Web Scraping, Beautiful Soup]
+image: soup.jfif
+---
+
+# First you have to import the required modules
+```{python setup}
+from bs4 import BeautifulSoup
+import requests
+```
+
+# Have to set the URL to the website and 
+

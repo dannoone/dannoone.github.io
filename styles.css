@@ -1,0 +1,28 @@
+.navbar-nav .nav-link { /* For Changes to Links */ 
+    font-family: "Bodoni MT", Sans-Serif;
+    font-size: 30px;
+    
+}
+
+.navbar-brand { /* For changes to Navbar Title */
+    font-family: "Bodoni MT", Sans-Serif;
+    font-size: 35px;
+    margin-left: 15px;
+}
+
+.navbar { /* Changes to nav bar itself */
+    background-color: #000000;
+}
+
+.nav-link { /* Putting borders between navbar links */
+  border-left: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
+}
+
+body {
+    background-color: #DCDCDE !important;
+}
+
+.nav-footer { /* Changes to Footer */
+    background-color: #DCDCDE !important;
+}

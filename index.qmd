@@ -1,0 +1,36 @@
+---
+title: "Daniel A. Noone"
+about:
+  template: solana  # jolla  trestles  solana  marquee  broadside
+  image: img/photo.jpg
+  image-width: 15em
+  image-shape: round # rectangle  round  rounded
+  
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/danielnoone123
+    - icon: github
+      text: GitHub
+      href: https://github.com/dan-noone/dan-noone.github.io
+    - icon: file-earmark-pdf
+      text: Resumé
+      href: C:\Users\Dan\OneDrive\Documents\dan-noone.github.io\resume-dnoone2.pdf
+    - icon: mailbox
+      text: Email
+      href: mailto:dan4@geneseo.edu
+
+---
+
+
+## Who is Daniel Noone?
+
+
+## Education
+
+State University of New York at Geneseo | Geneseo, NY <br>
+B.S. in Data Analytics | Aug 2022 - May 2025 <br>
+
+
+## Experience
+

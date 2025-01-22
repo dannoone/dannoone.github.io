@@ -1,0 +1,221 @@
+---
+title: "Python Basics"
+subtitle: "A quick look at the basics of python programming"
+author: 'Daniel Noone'
+date: '02-10-2024'
+categories: [Python]
+image: py.jfif
+
+highlight-style: monokai
+fig-width: 9
+
+toc: TRUE
+toc-title: 'Table of Contents'
+toc-depth: 2
+number-sections: true
+
+execute:
+  code-tools: true
+  message: false
+  warning: false
+---
+
+# Introduction
+
+This blog post is meant to give a brief introduction of some of the main topics in basic python programming
+
+# Variables & Assignment
+
+  * In python programming, variables are just names for values not actual storage places. <br>
+
+  * These values can be singular such as a numeric value of 10, but there can also be multiple values of the same or varying data types <br>
+
+  * an equal sign `=` is used to assign values to their respective variables (or objects)
+```{python}
+# Single value
+x = 10
+
+# Multiple values
+y = [1,2,3]
+
+#Multiple types
+z = ['a','b','c',1,2,3]
+```
+
+# Data Types in Python
+
+There are multiple different data types recognized by the python language.
+
+The most basic types are as follows:
+```{python}
+# Integer, numeric values with no decimals
+x = 10
+
+# Float, numeric values with decimals
+y = 10.99
+
+# String, character values surrounded by '' or ""
+z = 'hello, world' #OR 
+z = "hello, world"
+
+# Boolean, logical values
+x = True
+y = False
+
+# Nothing, no value
+z = None
+
+# List, data container for any data type (even multiple types at once)
+list_ = [10, 1.55, 'apple', True, False, None]
+
+# Tuple, non mutable data container
+tup = (2, 3 , 4)
+
+# Set
+set_ = {'a', 'b'}
+
+# Dictionary
+dict_ = {'first': 'a', 'second': 'b'}
+```
+
+# Operators
+
+Mathematical operations can also be done in python using preset operators:
+```{python}
+# Addition
+x = 5 + 5 # x would have value of 10
+y = x + 5 # y would have value of 15
+
+# Subtraction
+x = 5 - 1 # x would have value of 4
+y = x - 2 # y would have value of 2
+
+# Multiplication and Exponents (* for multiplication, ** for exponents)
+x = 5 * 2**2 # x would have value of 20
+y = x**2 * 5 # y would have value of 2000
+
+# Division and Integer Division (if want int type out of operation, use //)
+x = 4/2 # x would have value of 2.0
+y = x/2 # y would have value of 1.0
+
+x = 8//2 # x would have value of 4 (int type not float)
+y = x//2 # y would have value of 2 (again, int not float)
+
+# Can also perform string concatenation
+str_one = 'hello,'
+str_two = ' world'
+str_ = str_one + str_two # Result of summation is concatenation of str_one and str_two 
+                          # = 'hello, world'
+```
+
+# Conditionals
+
+Can perform conditional operations in python
+
+  * If statements
+  * If else
+  * etc...
+
+```{python}
+# Can use if and elif and else to formulate conditional operations
+# For example...
+
+name = 'David'
+score = 99
+
+if name == 'David' and score >= 90:
+  print('Great job, David!')
+elif name != 'David' and score >= 90:
+  print('Great job, stranger!')
+elif name == 'David' and score < 90:
+  print('You failed, David!')
+elif name != 'David' and score < 90:
+  print('You failed, stranger!')
+
+```
+-> Here the result is `'Great job, David!'` since the name is `'David'` and the score is `99`
+
+# Casting Variables
+
+Casting is when we explicitly assign a data type to a variable
+
+  * `str()` will convert to string type
+  * `int()` will convert to integer type
+  * `float()` will convert to float type
+  
+```{python}
+x = 10 # integer type
+y = '20' # string type
+z = 1.55 # float type
+
+x_ = float(x) # makes 10 into float type = 10.0
+y_ = int(y) # makes '20' into int type = 20
+z_ = int(z) # makes 1.55 into int type = 1 (DOES NOT ROUND)
+x_str = str(x) # makes 10 into str type = '10'
+``` 
+
+# Slicing Methods
+
+  * Python uses indexing to slice data
+  * The index starts at 0, **not 1**
+  
+  ![](slice.jfif)
+
+  * As seen in the image, negative values can also be used
+
+  * The syntax is as follows
+    * `[:]`       - will return the whole value
+    * `[start :]` - will return from a starting index value until the end
+    * `[: end]`   - will return from the start until the end index value
+    * `[start : end]` - Will return from start value to end value
+    * `[start : end: step]` - will return from start to end by a certain step amount
+
+```{python}
+string = 'abcdefghij'
+
+string[:5] # returns 'abcde' (first 5 characters of string)
+string[5:] # returns 'fghij' (last 5 characters of string)
+string[0:5:2] # returns 'ace' (first 5 characters, but in steps of 2)
+
+list_ = ['apple','banana','pear','strawberry','papaya','pineapple']
+
+list_[:3] # returns ['apple', 'banana', 'pear'] (first 3 elements of list)
+list_[3:] # returns ['strawberry', 'papaya', 'pineapple'] (last 3 elements of list)
+list_[0::2] # returns ['apple', 'pear', 'papaya'] (whole list by steps of 2)
+```
+
+# Importing Modules, Packages and Libraries
+
+  * `Module` - a bunch of related code saved in a file with extension .py
+  * `Package` - directory of a collection of modules
+  * `Library` - a collection of packages
+  
+  
+  * `import` is called on a module to be able to use it
+    * Then have to call module along with any functions associated
+```{python}
+import pandas
+# could then use pandas.read_csv() to read a csv
+```
+
+
+  * `import` `as` is called on a module to give it a name to make things more efficient
+```{python}
+import pandas as pd
+# Then could use pd.read_csv() instead of pandas.read_csv()
+```
+
+
+  * `from` and `import` is used to load a specific function from a module
+```{python}
+from pandas import read_csv
+# then can just use read_csv() as if it were a base function
+```
+
+
+  * In order to install a module, package or library - have to call `pip install` in terminal or `!pip install` if on Google Colab
+    * !pip install is also used for Rstudio
+```{python}
+# !pip install itables
+```
+

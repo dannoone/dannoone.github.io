@@ -1,0 +1,159 @@
+---
+title: "NYC Restaurant Inspections"
+author: "Daniel Noone"
+date: "12/10/2023"
+categories: [food, data exploration]
+image: "nyc.jfif"
+
+execute: 
+  warning: false
+  message: false
+  
+toc: true
+---
+
+---
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+
+theme_set(theme_ipsum()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(10,0,0,0)),
+                axis.title.y = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(0,10,0,0))
+                )
+          )
+```
+
+# Analyzing the `nyc_rest_ins` data frame 🍕
+
+```{r}
+nyc_rest_ins <- read.csv('https://bcdanl.github.io/data/DOHMH_NYC_Restaurant_Inspection.csv')
+```
+
+```{r}
+rmarkdown::paged_table(nyc_rest_ins)
+```
+
+## Description of Variables for `nyc_rest_ins` data frame 
+
+  - `CAMIS`: A unique identifier number for each restaurant
+  
+  - `DBA`: Stands for "doing business as", name of the restaurant
+  
+  - `BORO`: Indentifies the NYC Borough that the restaurant is located in
+    - Manhattan
+    - Bronx
+    - Brooklyn
+    - Queens
+    - Staten Island
+  
+  - `STREET`: Street address of the restaurant
+  
+  - `CUISINE DESCRIPTION`: Type of cuisine the restaurant sells
+  
+  - `INSPECTION DATE`: The date the inspection was performed
+  
+  - `ACTION`: Indicated the action(s) taken as a result of the inspection
+  
+  - `VIOLATION CODE`: Violation associated with the restaurant's inspection
+  
+  - `VIOLATION DESCRIPTION`: Descriprion of the violation associated with a restaurant's inspection
+  
+  - `CRITICAL FLAG`: Indicator of a critical violation as result of inspection
+    - Critical
+    - Not Critical
+    - Not Applicaple
+    
+  - `SCORE`: Numeric Score for the inspection
+  
+  - `Grade`: Letter Grade for the Inspection
+  
+## Summary Statisics for `nyc_rest_ins`:
+
+```{r}
+skim(nyc_rest_ins)
+```
+
+# Relationships
+
+## `GRADE` and `BORO`
+
+Graphical representation of the proportion of each `GRADE` value in each of the 5 values in `BORO`
+
+```{r}
+
+nyc1 <- nyc_rest_ins %>% 
+  group_by(BORO, GRADE) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n/sum(n))
+
+ggplot(data = nyc1,
+       mapping = aes(x = GRADE, y = prop))+
+  geom_bar(aes(fill = GRADE), stat = 'identity')+
+  facet_wrap(.~BORO)
+```
+
+#### Comments on analyses...
+
+ - All five boroughs seem to have around equal proportions of each Grade
+ 
+## `CRITICAL FLAG` and `BORO`
+
+Graphical representation of the count of each value of `CRITICAL FLAG` per each value of `BORO`
+
+```{r}
+nyc2 <- nyc_rest_ins %>% 
+  group_by(BORO, CRITICAL.FLAG) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n/sum(n))
+View(nyc2)
+
+ggplot(data = nyc2,
+       mapping = aes(x = CRITICAL.FLAG, y = n))+
+  geom_bar(aes(fill = CRITICAL.FLAG), stat = 'identity')+
+  facet_wrap(.~BORO)
+```
+
+#### Comments on analyses...
+
+  - The proportion of each value of `CRITICAL.FLAG` within each of the values of `BORO` seems to be about equal
+  - This faceted bar chart also gives info about the number of restaurants in each value of `BORO` within this data set. In order of most to least...
+    1. Manhattan has the most restaurants
+    2. Brooklyn has the second most
+    3. Queens the third most
+    4. Bronx second to last
+    5. Staten Island is last
+
+## `GRADE` and `CRITICAL FLAG`
+
+ Graphical representation of the proportion of each value of `GRADE` per value of `CRITICAL FLAG`
+
+```{r}
+nyc3 <- nyc_rest_ins %>% 
+  group_by(GRADE, CRITICAL.FLAG, BORO) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n/sum(n))
+View(nyc3)
+
+ggplot(data = nyc3)+
+  geom_bar(mapping = aes(x = CRITICAL.FLAG, y = prop, fill = GRADE), stat = 'identity', position = 'dodge')
+```
+
+#### Comments on analyses...
+
+ - The proportion of each value of `GRADE` seems to be almost equal per value of `CRITICAL FLAG` 
+ 
+ - The proportion of grade A seems to be slightly less for restaurants with No Critical Flags
+ 
+ - The proportions of grades B and C appear to be slightly less for restautants with Critical Flags
+
