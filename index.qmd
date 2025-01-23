@@ -12,10 +12,10 @@ about:
       href: https://linkedin.com/in/danielnoone123
     - icon: github
       text: GitHub
-      href: https://github.com/dan-noone/dan-noone.github.io
+      href: https://github.com/dannoone/dannoone.github.io
     - icon: file-earmark-pdf
       text: Resumé
-      href: C:\Users\Dan\OneDrive\Documents\dan-noone.github.io\resume-dnoone2.pdf
+      href: C:\Users\noone\OneDrive\Documents\School\quarto_sites\dannoone.github.io\dannoone.github.io\daniel_noone_resume_gradapp.pdf
     - icon: mailbox
       text: Email
       href: mailto:dan4@geneseo.edu
