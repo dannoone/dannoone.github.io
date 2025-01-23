@@ -15,7 +15,7 @@ about:
       href: https://github.com/dannoone/dannoone.github.io
     - icon: file-earmark-pdf
       text: Resumé
-      href: C:\Users\noone\OneDrive\Documents\School\quarto_sites\dannoone.github.io\dannoone.github.io\daniel_noone_resume_gradapp.pdf
+      href: https://github.com/dannoone/dannoone.github.io/blob/main/daniel_noone_resume_gradapp.pdf
     - icon: mailbox
       text: Email
       href: mailto:dan4@geneseo.edu
