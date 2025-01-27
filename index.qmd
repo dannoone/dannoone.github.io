@@ -24,13 +24,17 @@ about:
 
 
 ## Who is Daniel Noone?
-
+Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence. 
 
 ## Education
 
 State University of New York at Geneseo | Geneseo, NY <br>
-B.S. in Data Analytics | Aug 2022 - May 2025 <br>
+B.S. Data Analytics | Aug 2022 - May 2025 <br>
+
+
+Rochester Institute of Technology | Henrietta, NY <br>
+M.S. Artificial Intelligence | August 2025 - Undetermined <br>
 
 
 ## Experience
-
+Much experience in data collection and transformation, in both R and Python languages. Also well versed in the fundamental machine learning models and their optimization.

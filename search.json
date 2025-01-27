@@ -4,14 +4,14 @@
     "href": "index.html#education",
     "title": "Daniel A. Noone",
     "section": "Education",
-    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. in Data Analytics | Aug 2022 - May 2025"
+    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. Data Analytics | Aug 2022 - May 2025 \nRochester Institute of Technology | Henrietta, NY  M.S. Artificial Intelligence | August 2025 - Undetermined"
   },
   {
     "objectID": "index.html#experience",
     "href": "index.html#experience",
     "title": "Daniel A. Noone",
     "section": "Experience",
-    "text": "Experience"
+    "text": "Experience\nMuch experience in data collection and transformation, in both R and Python languages. Also well versed in the fundamental machine learning models and their optimization."
   },
   {
     "objectID": "class_blog.html",
@@ -33,5 +33,19 @@
     "title": "Class Projects",
     "section": "",
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDANL 210 Project\n\n\nYfinance Data Collection and ESG Data Exploration\n\n\n\n\n\nJan 28, 2024\n\n\nDaniel Noone\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 200 Project\n\n\nAir Quality Data as per the EPA regarding Criteria Air Pollutants\n\n\n\n\n\nJan 28, 2024\n\n\nDaniel Noone\n\n\n14 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Daniel A. Noone",
+    "section": "",
+    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
+  },
+  {
+    "objectID": "index.html#who-is-daniel-noone",
+    "href": "index.html#who-is-daniel-noone",
+    "title": "Daniel A. Noone",
+    "section": "",
+    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
   }
 ]
