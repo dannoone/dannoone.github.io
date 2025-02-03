@@ -11,6 +11,9 @@ website:
         href: class_projects.qmd
       - text: 'Personal Projects'
         href: personal_blog.qmd
+      - text: 'DANL310'
+        menu: 
+          - danl_310_lec_3_and_4.qmd
   page-footer: 
     center: "Powered with GitHub, Quarto and Rstudio<br>© Daniel Noone, 2023"
 
