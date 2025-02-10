@@ -1,24 +1,26 @@
 [
   {
-    "listing": "/class_blog.html",
+    "listing": "/personal_blog.html",
     "items": []
   },
   {
-    "listing": "/blog-listing.html",
+    "listing": "/danl_320.html",
     "items": []
+  },
+  {
+    "listing": "/danl_310.html",
+    "items": [
+      "/danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html"
+    ]
+  },
+  {
+    "listing": "/class_blog.html",
+    "items": [
+      "/class_blog_posts/welcome/index.html"
+    ]
   },
   {
     "listing": "/class_projects.html",
-    "items": [
-      "/class_proj_posts/DANL210 Project/project_210.html",
-      "/class_proj_posts/DANL200 Project/project.html"
-    ]
-  },
-  {
-    "listing": "/personal_blog.html",
-    "items": [
-      "/personal_posts/eeg_log_reg/eeg_psych_ml-checkpoint.html",
-      "/personal_posts/web_scraping1/wep_scrape_tutorial.html"
-    ]
+    "items": []
   }
 ]
