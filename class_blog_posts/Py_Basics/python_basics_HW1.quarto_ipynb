@@ -39,7 +39,7 @@
         "\n",
         "  * an equal sign `=` is used to assign values to their respective variables (or objects)"
       ],
-      "id": "8ea7c830"
+      "id": "e399753b"
     },
     {
       "cell_type": "code",
@@ -54,7 +54,7 @@
         "#Multiple types\n",
         "z = ['a','b','c',1,2,3]"
       ],
-      "id": "28308121",
+      "id": "e94208e9",
       "execution_count": null,
       "outputs": []
     },
@@ -68,7 +68,7 @@
         "\n",
         "The most basic types are as follows:"
       ],
-      "id": "88660a80"
+      "id": "08e06d80"
     },
     {
       "cell_type": "code",
@@ -103,7 +103,7 @@
         "# Dictionary\n",
         "dict_ = {'first': 'a', 'second': 'b'}"
       ],
-      "id": "56e246d4",
+      "id": "27cfba78",
       "execution_count": null,
       "outputs": []
     },
@@ -115,7 +115,7 @@
         "\n",
         "Mathematical operations can also be done in python using preset operators:"
       ],
-      "id": "05aa85d9"
+      "id": "e006fd03"
     },
     {
       "cell_type": "code",
@@ -146,7 +146,7 @@
         "str_ = str_one + str_two # Result of summation is concatenation of str_one and str_two \n",
         "                          # = 'hello, world'"
       ],
-      "id": "550cebc7",
+      "id": "78ecd28f",
       "execution_count": null,
       "outputs": []
     },
@@ -162,7 +162,7 @@
         "  * If else\n",
         "  * etc...\n"
       ],
-      "id": "c38e8bc3"
+      "id": "9b17e1a7"
     },
     {
       "cell_type": "code",
@@ -183,7 +183,7 @@
         "elif name != 'David' and score < 90:\n",
         "  print('You failed, stranger!')"
       ],
-      "id": "d95b305c",
+      "id": "204a1628",
       "execution_count": null,
       "outputs": []
     },
@@ -201,7 +201,7 @@
         "  * `int()` will convert to integer type\n",
         "  * `float()` will convert to float type\n"
       ],
-      "id": "2b71523e"
+      "id": "c9d105a9"
     },
     {
       "cell_type": "code",
@@ -216,7 +216,7 @@
         "z_ = int(z) # makes 1.55 into int type = 1 (DOES NOT ROUND)\n",
         "x_str = str(x) # makes 10 into str type = '10'"
       ],
-      "id": "50739004",
+      "id": "29622a17",
       "execution_count": null,
       "outputs": []
     },
@@ -240,7 +240,7 @@
         "    * `[start : end]` - Will return from start value to end value\n",
         "    * `[start : end: step]` - will return from start to end by a certain step amount\n"
       ],
-      "id": "62b2b6aa"
+      "id": "9606b1fb"
     },
     {
       "cell_type": "code",
@@ -258,7 +258,7 @@
         "list_[3:] # returns ['strawberry', 'papaya', 'pineapple'] (last 3 elements of list)\n",
         "list_[0::2] # returns ['apple', 'pear', 'papaya'] (whole list by steps of 2)"
       ],
-      "id": "d11f2e89",
+      "id": "042c81a0",
       "execution_count": null,
       "outputs": []
     },
@@ -276,7 +276,7 @@
         "  * `import` is called on a module to be able to use it\n",
         "    * Then have to call module along with any functions associated"
       ],
-      "id": "c66e9d1f"
+      "id": "fb6adb54"
     },
     {
       "cell_type": "code",
@@ -285,7 +285,7 @@
         "import pandas\n",
         "# could then use pandas.read_csv() to read a csv"
       ],
-      "id": "77a0143d",
+      "id": "1d2bcb44",
       "execution_count": null,
       "outputs": []
     },
@@ -295,7 +295,7 @@
       "source": [
         "  * `import` `as` is called on a module to give it a name to make things more efficient"
       ],
-      "id": "0c9535c1"
+      "id": "0aaa8336"
     },
     {
       "cell_type": "code",
@@ -304,7 +304,7 @@
         "import pandas as pd\n",
         "# Then could use pd.read_csv() instead of pandas.read_csv()"
       ],
-      "id": "d01f076f",
+      "id": "fb0f4bf4",
       "execution_count": null,
       "outputs": []
     },
@@ -314,7 +314,7 @@
       "source": [
         "  * `from` and `import` is used to load a specific function from a module"
       ],
-      "id": "0be977ad"
+      "id": "74537e66"
     },
     {
       "cell_type": "code",
@@ -323,7 +323,7 @@
         "from pandas import read_csv\n",
         "# then can just use read_csv() as if it were a base function"
       ],
-      "id": "2b0d9be9",
+      "id": "0465a6ba",
       "execution_count": null,
       "outputs": []
     },
@@ -334,7 +334,7 @@
         "  * In order to install a module, package or library - have to call `pip install` in terminal or `!pip install` if on Google Colab\n",
         "    * !pip install is also used for Rstudio"
       ],
-      "id": "61c8fea7"
+      "id": "ddd3b316"
     },
     {
       "cell_type": "code",
@@ -342,7 +342,7 @@
       "source": [
         "# !pip install itables"
       ],
-      "id": "a8d2f2f0",
+      "id": "5ccac45e",
       "execution_count": null,
       "outputs": []
     }
