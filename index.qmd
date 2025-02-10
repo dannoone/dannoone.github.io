@@ -2,7 +2,7 @@
 title: "Daniel A. Noone"
 about:
   template: solana  # jolla  trestles  solana  marquee  broadside
-  image: img/photo.jpg
+  image: 'img/photo.jpg'
   image-width: 15em
   image-shape: round # rectangle  round  rounded
   
@@ -19,6 +19,8 @@ about:
     - icon: mailbox
       text: Email
       href: mailto:dan4@geneseo.edu
+
+
 
 ---
 

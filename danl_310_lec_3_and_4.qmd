@@ -2,8 +2,7 @@
 title: "DANL 310 | Lecture 3"
 author: "Daniel Noone"
 date: "01/27/2025"
-categories:
-image:
+
 
 execute: 
   warning: false
