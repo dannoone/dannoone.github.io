@@ -1,0 +1,82 @@
+---
+title: "DANL | Lec. Notes"
+date: '02/12/2025'
+format: html
+---
+
+```{r}
+library(tidyverse)
+gsm <- socviz::gss_sm
+```
+
+# Dplyr dataframe transformation
+```{r}
+
+
+gsm_rel <- gsm %>% 
+  group_by(bigregion, religion) %>% 
+  summarise(N = n()) %>% 
+  mutate(frq = N/sum(N),
+         pct = round(frq*100,2)) %>% 
+  arrange(bigregion, pct)
+
+l <- c("Protestant", "Catholic", "None", "Other", "Jewish")
+gsm_rel$religion <- factor(gsm_rel$religion, levels = l)
+
+ggplot(gsm_rel, mapping =
+         aes(x = bigregion, y = frq, fill = religion))+
+  geom_col(position = 'dodge2')+
+  scale_y_continuous(label = scales::percent)+
+  theme_minimal()+
+  labs(x = '', y = 'Religion Proportion (%)', title = 'Religion in U.S. Regions',fill = 'Religion')+
+  theme(legend.position = 'bottom')
+```
+
+
+# CLASSWORK 5
+
+##Q1
+```{r}
+q1 <- gsm %>% 
+  group_by(bigregion, religion) %>% 
+  summarize(N = n()) %>% 
+  mutate(frq = N/sum(N))
+
+ggplot(q1, mapping = 
+         aes(x = frq, y = religion, fill = religion))+
+  geom_col()+
+  facet_grid(~bigregion)+
+  scale_x_continuous(label = scales::percent)+
+  guides(fill = 'none')+
+  labs(x = 'Proportion (%)', y = '')
+```
+
+## Q2
+```{r}
+od <- socviz::organdata
+```
+
+### Q2a (Cleveland Dotplots, sometimes preferred to barcharts)
+```{r}
+a <- od %>% 
+  group_by(consent_law, country) %>% 
+  summarise(dpr_mean = mean(donors, na.rm = T))
+
+ggplot(a, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean), colour = consent_law))+
+  geom_point()+
+  theme(legend.position = 'top')+
+  labs(x = 'Donor Procurement Rate', y = '')
+  
+```
+
+### Q2b
+```{r}
+b <- a
+
+ggplot(b, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean, na.rm = T)))+
+  geom_point()+
+  facet_wrap(~consent_law, ncol = 1, scales = 'free_y')+
+  labs(y = '', x = 'Donor Procurement Rate')
+```
+
+### Q2c (dot and whisker plot, gives error bars for st dev)

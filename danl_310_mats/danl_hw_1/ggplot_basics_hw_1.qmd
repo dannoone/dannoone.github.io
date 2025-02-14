@@ -1,0 +1,58 @@
+---
+title: "ggplot Basics | Hw 1 Post"
+subtitle: 'In this post the basics of ggplot2 syntax with be discussed'
+author: "Daniel Noone"
+date: '2025-02-13'
+categories: ['Homework', 'ggplot']
+image: ggplot.png
+output-file: html_document
+execute: 
+  warning: false
+  message: false
+  
+toc: true
+---
+
+## If needed, apply dplyr transformation functions to make it so the target distribution or relationship can be obtained
+```{r}
+library(tidyverse)
+df <- datasets::mtcars
+
+df <- df %>% 
+  filter(cyl %in% c(4,6)) %>% # Say you wanted to only visualize relationships for 4 or 6 cylinder.
+  mutate(cyl_chr = as.character(cyl))
+
+df2 <- male_Aus <- read_csv(
+  'https://bcdanl.github.io/data/aus_athletics_male.csv')
+
+df2 <-df2 %>% 
+  group_by(sport) %>% 
+  summarise(mean_bf = mean(pcBfat)) %>% 
+  mutate(sport = fct_reorder(sport, mean_bf))
+```
+
+## Create ggplot() object with any mappings and assign df
+```{r}
+p = ggplot(data = df, mapping = 
+         aes(x = mpg, y = hp))
+
+p2 = ggplot(data = df2, mapping = 
+              aes(x = sport, y = mean_bf))
+```
+
+## Apply the applicable geoms and theme or labs modifications
+- Geoms in ggplot2 allow for one to choose which plotting methods are performed and calibrate certain parameters.
+```{r} 
+p + geom_point(aes(color = cyl_chr), size = 2, shape = 16)+
+  labs(x = 'Miles per Gallon', y = 'Horsepower', color = 'Cylinders', title = 'Miles Per Gallon vs. Horsepower')+
+  theme_bw()+
+  theme(legend.position = c(0.95, 0.9))+
+  scale_color_manual(values = c('red',  'blue'))
+```
+```{r}
+p2 + geom_bar(aes(fill = sport), position = 'dodge', stat = 'identity')+
+  guides(fill = F)+
+  theme_bw()+
+  labs(x = 'Sport', y = 'Mean Body Fat', title = 'Mean Body Fat vs. Sport')
+```
+

@@ -18,7 +18,7 @@
     "href": "danl_310.html",
     "title": "DANL 310",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nggplot Basics | Hw 1 Post\n\n\nIn this post the basics of ggplot2 syntax with be discussed\n\n\n\n\n\nFeb 13, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL | Lec. Notes\n\n\n\n\n\n\n\n\nFeb 12, 2025\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "class_blog_posts/welcome/index.html",
@@ -75,5 +75,54 @@
     "title": "Daniel A. Noone",
     "section": "Experience",
     "text": "Experience\nMuch experience in data collection and transformation, in both R and Python languages. Also well versed in the fundamental machine learning models and their optimization."
+  },
+  {
+    "objectID": "danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html",
+    "href": "danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html",
+    "title": "DANL | Lec. Notes",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\ngsm &lt;- socviz::gss_sm"
+  },
+  {
+    "objectID": "danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html#q2",
+    "href": "danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html#q2",
+    "title": "DANL | Lec. Notes",
+    "section": "Q2",
+    "text": "Q2\n\nod &lt;- socviz::organdata\n\n\nQ2a (Cleveland Dotplots, sometimes preferred to barcharts)\n\na &lt;- od %&gt;% \n  group_by(consent_law, country) %&gt;% \n  summarise(dpr_mean = mean(donors, na.rm = T))\n\n`summarise()` has grouped output by 'consent_law'. You can override using the\n`.groups` argument.\n\nggplot(a, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean), colour = consent_law))+\n  geom_point()+\n  theme(legend.position = 'top')+\n  labs(x = 'Donor Procurement Rate', y = '')\n\n\n\n\n\n\n\n\n\n\nQ2b\n\nb &lt;- a\n\nggplot(b, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean, na.rm = T)))+\n  geom_point()+\n  facet_wrap(~consent_law, ncol = 1, scales = 'free_y')+\n  labs(y = '', x = 'Donor Procurement Rate')\n\n\n\n\n\n\n\n\n\n\nQ2c (dot and whisker plot, gives error bars for st dev)"
+  },
+  {
+    "objectID": "danl_310_mats/danl_hw_1/ggplot_basics_hw_1.html",
+    "href": "danl_310_mats/danl_hw_1/ggplot_basics_hw_1.html",
+    "title": "ggplot Basics | Hw 1 Post",
+    "section": "",
+    "text": "Hi"
+  },
+  {
+    "objectID": "danl_310_mats/danl_hw_1/html_document.html",
+    "href": "danl_310_mats/danl_hw_1/html_document.html",
+    "title": "ggplot Basics | Hw 1 Post",
+    "section": "",
+    "text": "library(tidyverse)\ndf &lt;- datasets::mtcars\n\ndf &lt;- df %&gt;% \n  filter(cyl %in% c(4,6)) %&gt;% # Say you wanted to only visualize relationships for 4 or 6 cylinder.\n  mutate(cyl_chr = as.character(cyl))\n\ndf2 &lt;- male_Aus &lt;- read_csv(\n  'https://bcdanl.github.io/data/aus_athletics_male.csv')\n\ndf2 &lt;-df2 %&gt;% \n  group_by(sport) %&gt;% \n  summarise(mean_bf = mean(pcBfat)) %&gt;% \n  mutate(sport = fct_reorder(sport, mean_bf))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_hw_1/html_document.html#if-needed-apply-dplyr-transformation-functions-to-make-it-so-the-target-distribution-or-relationship-can-be-obtained",
+    "href": "danl_310_mats/danl_hw_1/html_document.html#if-needed-apply-dplyr-transformation-functions-to-make-it-so-the-target-distribution-or-relationship-can-be-obtained",
+    "title": "ggplot Basics | Hw 1 Post",
+    "section": "",
+    "text": "library(tidyverse)\ndf &lt;- datasets::mtcars\n\ndf &lt;- df %&gt;% \n  filter(cyl %in% c(4,6)) %&gt;% # Say you wanted to only visualize relationships for 4 or 6 cylinder.\n  mutate(cyl_chr = as.character(cyl))\n\ndf2 &lt;- male_Aus &lt;- read_csv(\n  'https://bcdanl.github.io/data/aus_athletics_male.csv')\n\ndf2 &lt;-df2 %&gt;% \n  group_by(sport) %&gt;% \n  summarise(mean_bf = mean(pcBfat)) %&gt;% \n  mutate(sport = fct_reorder(sport, mean_bf))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_hw_1/html_document.html#create-ggplot-object-with-any-mappings-and-assign-df",
+    "href": "danl_310_mats/danl_hw_1/html_document.html#create-ggplot-object-with-any-mappings-and-assign-df",
+    "title": "ggplot Basics | Hw 1 Post",
+    "section": "Create ggplot() object with any mappings and assign df",
+    "text": "Create ggplot() object with any mappings and assign df\n\np = ggplot(data = df, mapping = \n         aes(x = mpg, y = hp))\n\np2 = ggplot(data = df2, mapping = \n              aes(x = sport, y = mean_bf))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_hw_1/html_document.html#apply-the-applicable-geoms-and-theme-or-labs-modifications",
+    "href": "danl_310_mats/danl_hw_1/html_document.html#apply-the-applicable-geoms-and-theme-or-labs-modifications",
+    "title": "ggplot Basics | Hw 1 Post",
+    "section": "Apply the applicable geoms and theme or labs modifications",
+    "text": "Apply the applicable geoms and theme or labs modifications\n\nGeoms in ggplot2 allow for one to choose which plotting methods are performed and calibrate certain parameters.\n\n\np + geom_point(aes(color = cyl_chr), size = 2, shape = 16)+\n  labs(x = 'Miles per Gallon', y = 'Horsepower', color = 'Cylinders', title = 'Miles Per Gallon vs. Horsepower')+\n  theme_bw()+\n  theme(legend.position = c(0.95, 0.9))+\n  scale_color_manual(values = c('red',  'blue'))\n\n\n\n\n\n\n\n\n\np2 + geom_bar(aes(fill = sport), position = 'dodge', stat = 'identity')+\n  guides(fill = F)+\n  theme_bw()+\n  labs(x = 'Sport', y = 'Mean Body Fat', title = 'Mean Body Fat vs. Sport')"
   }
 ]
