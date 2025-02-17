@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel Noone">
+<meta name="dcterms.date" content="2025-02-14">
+
+<title>PySpark Basics | Hw 1 Post – About</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">About</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../personal_blog.html"> 
+<span class="menu-text">Personal Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../danl_310.html"> 
+<span class="menu-text">DANL310</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../danl_320.html"> 
+<span class="menu-text">DANL320</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-apache-spark" id="toc-what-is-apache-spark" class="nav-link active" data-scroll-target="#what-is-apache-spark">What is Apache Spark?</a></li>
+  <li><a href="#import-proper-library-components-to-start-a-pyspark-session" id="toc-import-proper-library-components-to-start-a-pyspark-session" class="nav-link" data-scroll-target="#import-proper-library-components-to-start-a-pyspark-session">Import proper library components to start a <code>PySpark</code> session</a></li>
+  <li><a href="#general-pyspark-methods" id="toc-general-pyspark-methods" class="nav-link" data-scroll-target="#general-pyspark-methods">General PySpark Methods</a></li>
+  <li><a href="#data-transformation-with-pyspark" id="toc-data-transformation-with-pyspark" class="nav-link" data-scroll-target="#data-transformation-with-pyspark">Data Transformation with PySpark</a>
+  <ul class="collapse">
+  <li><a href="#counting-operations" id="toc-counting-operations" class="nav-link" data-scroll-target="#counting-operations">Counting operations</a></li>
+  <li><a href="#ordering-operations" id="toc-ordering-operations" class="nav-link" data-scroll-target="#ordering-operations">Ordering operations</a></li>
+  <li><a href="#adding-columns" id="toc-adding-columns" class="nav-link" data-scroll-target="#adding-columns">Adding columns</a></li>
+  <li><a href="#removing-columns" id="toc-removing-columns" class="nav-link" data-scroll-target="#removing-columns">Removing columns</a></li>
+  <li><a href="#renaming-columns" id="toc-renaming-columns" class="nav-link" data-scroll-target="#renaming-columns">Renaming columns</a></li>
+  <li><a href="#aggregations-and-summary-statistics" id="toc-aggregations-and-summary-statistics" class="nav-link" data-scroll-target="#aggregations-and-summary-statistics">Aggregations and Summary Statistics</a></li>
+  <li><a href="#converting-data-types" id="toc-converting-data-types" class="nav-link" data-scroll-target="#converting-data-types">Converting Data Types</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  <li><a href="#dealing-with-missing-values" id="toc-dealing-with-missing-values" class="nav-link" data-scroll-target="#dealing-with-missing-values">Dealing with Missing Values</a></li>
+  <li><a href="#duplicate-operations" id="toc-duplicate-operations" class="nav-link" data-scroll-target="#duplicate-operations">Duplicate operations</a></li>
+  <li><a href="#group-operations-window" id="toc-group-operations-window" class="nav-link" data-scroll-target="#group-operations-window">Group operations (&amp; Window)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PySpark Basics | Hw 1 Post</h1>
+<p class="subtitle lead">Within this post the basics of PySpark will be discussed</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">PySpark</div>
+    <div class="quarto-category">Homework</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daniel Noone </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 14, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="what-is-apache-spark" class="level1">
+<h1>What is Apache Spark?</h1>
+<ul>
+<li>A distributed processing system which is mainly used for large sizes of data sets</li>
+<li>Provides multiple libraries:
+<ul>
+<li>Parallel processing</li>
+<li>Machine learning</li>
+<li>etc.</li>
+</ul></li>
+<li><strong>Spark Structure on Cluster of Computers</strong>
+<ul>
+<li><code>Driver</code> communicates with <code>cluster manager</code> to get worker nodes</li>
+<li><code>Cluster manager</code> allocates the necessary resources (nodes) and assigns pieces of the total process</li>
+<li><code>Worker nodes</code> perform given tasks (pieces of a larger process) and return the result to the <code>Driver node</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="import-proper-library-components-to-start-a-pyspark-session" class="level1">
+<h1>Import proper library components to start a <code>PySpark</code> session</h1>
+<div id="cell-4" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql <span class="im">import</span> SparkSession</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>spark <span class="op">=</span> SparkSession.builder.master(<span class="st">"local[*]"</span>).getOrCreate() <span class="co"># line needs to be run prior to loading new data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df_pd <span class="op">=</span> pd.read_csv(<span class="st">'https://bcdanl.github.io/data/nba.csv'</span>) <span class="co"># pandas read_csv() method used to load csv</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> spark.createDataFrame(df_pd) <span class="co"># .createDataFrame() used to load pandas df into current spark session</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="general-pyspark-methods" class="level1">
+<h1>General PySpark Methods</h1>
+<div id="cell-6" class="cell" data-outputid="2dddf972-674f-425a-86e5-da3cc01f335a" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df.show(<span class="dv">5</span>) <span class="co"># Shows top 20 rows of df by default</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Accepts n, truncate and vertical parameters which are optional</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># n specifies number of rows to show</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># truncate True False or and int, specifies whether or not long strings will be truncated, default is 20 chars</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vertical, if True displays each row vertically (useful for wide tables)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------+------------------+--------+--------+-------+
+|          Name|              Team|Position|Birthday| Salary|
++--------------+------------------+--------+--------+-------+
+|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|1445697|
+|Christian Wood|   Detroit Pistons|      PF| 9/27/95|1645357|
+| PJ Washington| Charlotte Hornets|      PF| 8/23/98|3831840|
+|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|7317074|
+| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|  79568|
++--------------+------------------+--------+--------+-------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-outputid="a284f3f9-14e3-46d2-e0d5-3551f8b89439" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.printSchema() <span class="co"># prints schema of df in tree forman, nullable = true means var can contain null vals</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df.columns <span class="co"># prints columns of df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>root
+ |-- Name: string (nullable = true)
+ |-- Team: string (nullable = true)
+ |-- Position: string (nullable = true)
+ |-- Birthday: string (nullable = true)
+ |-- Salary: long (nullable = true)
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>['Name', 'Team', 'Position', 'Birthday', 'Salary']</code></pre>
+</div>
+</div>
+<div id="cell-8" class="cell" data-outputid="bf457069-67cb-4909-f88f-fc25f9756a8f" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.dtypes <span class="co"># prints list of tuples with column name and data type [('varname', 'dtype'), etc...]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>[('Name', 'string'),
+ ('Team', 'string'),
+ ('Position', 'string'),
+ ('Birthday', 'string'),
+ ('Salary', 'bigint')]</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell" data-outputid="716a70de-62ea-4b2b-e725-aeff4cb7909e" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.describe().show() <span class="co"># .describe computes summary stats, .show displays them</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-------+--------------+------------------+--------+--------+-----------------+
+|summary|          Name|              Team|Position|Birthday|           Salary|
++-------+--------------+------------------+--------+--------+-----------------+
+|  count|           450|               450|     450|     450|              450|
+|   mean|          NULL|              NULL|    NULL|    NULL|7653583.764444444|
+| stddev|          NULL|              NULL|    NULL|    NULL|9288810.298497688|
+|    min|  Aaron Gordon|     Atlanta Hawks|       C| 1/10/98|            79568|
+|    max|Zylan Cheatham|Washington Wizards|      SG|  9/9/93|         40231758|
++-------+--------------+------------------+--------+--------+-----------------+
+</code></pre>
+</div>
+</div>
+<div id="cell-10" class="cell" data-outputid="31cf0d28-5d7c-4594-f17c-0c4baf306f2a" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df.select(<span class="st">'Name'</span>).show(<span class="dv">5</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df.select(<span class="st">'Name'</span>, <span class="st">'Team'</span>, <span class="st">'Salary'</span>).show(<span class="dv">5</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># .select is used to select vars from df, .show displays them</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------+
+|          Name|
++--------------+
+|  Shake Milton|
+|Christian Wood|
+| PJ Washington|
+|  Derrick Rose|
+| Marial Shayok|
++--------------+
+only showing top 5 rows
+
++--------------+------------------+-------+
+|          Name|              Team| Salary|
++--------------+------------------+-------+
+|  Shake Milton|Philadelphia 76ers|1445697|
+|Christian Wood|   Detroit Pistons|1645357|
+| PJ Washington| Charlotte Hornets|3831840|
+|  Derrick Rose|   Detroit Pistons|7317074|
+| Marial Shayok|Philadelphia 76ers|  79568|
++--------------+------------------+-------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="data-transformation-with-pyspark" class="level1">
+<h1>Data Transformation with PySpark</h1>
+<section id="counting-operations" class="level2">
+<h2 class="anchored" data-anchor-id="counting-operations">Counting operations</h2>
+<div id="cell-13" class="cell" data-outputid="7ba81e89-7da6-4670-fc6e-047ab227c417" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> countDistinct</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>num_teams <span class="op">=</span> df.select(countDistinct(<span class="st">'Team'</span>)).collect()[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>num_teams <span class="co"># Simply returns number of distinct teams</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>30</code></pre>
+</div>
+</div>
+<div id="cell-14" class="cell" data-outputid="649e4d80-26d4-46d8-938f-e3cdd973e650" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df.groupBy(<span class="st">"Team"</span>).count().show(<span class="dv">5</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># groups df by team, counts each occurance of team (so num players) and displays first 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------------+-----+
+|                Team|count|
++--------------------+-----+
+|        Phoenix Suns|   15|
+|      Boston Celtics|   16|
+|    Dallas Mavericks|   13|
+|New Orleans Pelicans|   16|
+|       Brooklyn Nets|   17|
++--------------------+-----+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="ordering-operations" class="level2">
+<h2 class="anchored" data-anchor-id="ordering-operations">Ordering operations</h2>
+<div id="cell-16" class="cell" data-outputid="db8fa6c0-0aca-45a4-ad09-703325a528f7" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df.orderBy(<span class="st">'Name'</span>).show(<span class="dv">5</span>) <span class="co"># Sorts asc (by default) by single col</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----------------+--------------------+--------+--------+--------+
+|             Name|                Team|Position|Birthday|  Salary|
++-----------------+--------------------+--------+--------+--------+
+|     Aaron Gordon|       Orlando Magic|      PF| 9/16/95|19863636|
+|    Aaron Holiday|      Indiana Pacers|      PG| 9/30/96| 2239200|
+|      Abdel Nader|Oklahoma City Thu...|      SF| 9/25/93| 1618520|
+|      Adam Mokoka|       Chicago Bulls|       G| 7/18/98|   79568|
+|Admiral Schofield|  Washington Wizards|      SF| 3/30/97| 1000000|
++-----------------+--------------------+--------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-17" class="cell" data-outputid="8ecde4f0-f098-45d5-96b0-5fdac5cccaa4" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> desc</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df.orderBy(desc(<span class="st">'Salary'</span>)).show(<span class="dv">5</span>) <span class="co"># sort by salary desc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----------------+--------------------+--------+--------+--------+
+|             Name|                Team|Position|Birthday|  Salary|
++-----------------+--------------------+--------+--------+--------+
+|    Stephen Curry|Golden State Warr...|      PG| 3/14/88|40231758|
+|Russell Westbrook|     Houston Rockets|      PG|11/12/88|38506482|
+|       Chris Paul|Oklahoma City Thu...|      PG|  5/6/85|38506482|
+|        John Wall|  Washington Wizards|      PG|  9/6/90|38199000|
+|     James Harden|     Houston Rockets|      PG| 8/26/89|38199000|
++-----------------+--------------------+--------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-18" class="cell" data-outputid="4156ae1b-5997-4a48-a309-17c34bd6edb1" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df.orderBy([<span class="st">'Team'</span>, desc(<span class="st">'Salary'</span>)]).show(<span class="dv">5</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sort by multiple cols</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+----------------+-------------+--------+--------+--------+
+|            Name|         Team|Position|Birthday|  Salary|
++----------------+-------------+--------+--------+--------+
+|Chandler Parsons|Atlanta Hawks|      SF|10/25/88|25102512|
+|     Evan Turner|Atlanta Hawks|      PG|10/27/88|18606556|
+|    Allen Crabbe|Atlanta Hawks|      SG|  4/9/92|18500000|
+| De'Andre Hunter|Atlanta Hawks|      SF| 12/2/97| 7068360|
+|   Jabari Parker|Atlanta Hawks|      PF| 3/15/95| 6500000|
++----------------+-------------+--------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-columns" class="level2">
+<h2 class="anchored" data-anchor-id="adding-columns">Adding columns</h2>
+<div id="cell-20" class="cell" data-outputid="0cdb3605-c6de-4347-8452-ac0095fbb982" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding columns with withcolumn()</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df_add <span class="op">=</span> df.withColumn(<span class="st">'salary_k'</span>, col(<span class="st">'Salary'</span>)<span class="op">/</span> <span class="dv">1000</span>).show(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------+------------------+--------+--------+-------+--------+
+|          Name|              Team|Position|Birthday| Salary|salary_k|
++--------------+------------------+--------+--------+-------+--------+
+|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|1445697|1445.697|
+|Christian Wood|   Detroit Pistons|      PF| 9/27/95|1645357|1645.357|
+| PJ Washington| Charlotte Hornets|      PF| 8/23/98|3831840| 3831.84|
+|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|7317074|7317.074|
+| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|  79568|  79.568|
++--------------+------------------+--------+--------+-------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="removing-columns" class="level2">
+<h2 class="anchored" data-anchor-id="removing-columns">Removing columns</h2>
+<div id="cell-22" class="cell" data-outputid="287a0a96-5b54-47d3-92d9-ada004e845f9" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing cols with drop()</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_drop <span class="op">=</span> df.drop(<span class="st">'Salary'</span>).show(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------+------------------+--------+--------+
+|          Name|              Team|Position|Birthday|
++--------------+------------------+--------+--------+
+|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|
+|Christian Wood|   Detroit Pistons|      PF| 9/27/95|
+| PJ Washington| Charlotte Hornets|      PF| 8/23/98|
+|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|
+| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|
++--------------+------------------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="renaming-columns" class="level2">
+<h2 class="anchored" data-anchor-id="renaming-columns">Renaming columns</h2>
+<div id="cell-24" class="cell" data-outputid="3de29175-07a8-488d-ecbd-82cc29fb6086" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Renaming columns with withColumnsRenamed()</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df_ren <span class="op">=</span> df.withColumnRenamed(<span class="st">'Team'</span>, <span class="st">'Team Name'</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>df_ren.show(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------+------------------+--------+--------+-------+
+|          Name|         Team Name|Position|Birthday| Salary|
++--------------+------------------+--------+--------+-------+
+|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|1445697|
+|Christian Wood|   Detroit Pistons|      PF| 9/27/95|1645357|
+| PJ Washington| Charlotte Hornets|      PF| 8/23/98|3831840|
+|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|7317074|
+| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|  79568|
++--------------+------------------+--------+--------+-------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+</section>
+<section id="aggregations-and-summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="aggregations-and-summary-statistics">Aggregations and Summary Statistics</h2>
+<div id="cell-26" class="cell" data-outputid="b9588c3d-734e-431c-f72e-bbf5ff606bbe" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregations and Summary Stats</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>df.selectExpr(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean(Salary) as mean_sal'</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min(Salary) as min_sal'</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max(Salary) as max_sal'</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'stddev_pop(Salary) as std_salary'</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----------------+-------+--------+-----------------+
+|         mean_sal|min_sal| max_sal|       std_salary|
++-----------------+-------+--------+-----------------+
+|7653583.764444444|  79568|40231758|9278483.657952718|
++-----------------+-------+--------+-----------------+
+</code></pre>
+</div>
+</div>
+</section>
+<section id="converting-data-types" class="level2">
+<h2 class="anchored" data-anchor-id="converting-data-types">Converting Data Types</h2>
+<div id="cell-28" class="cell" data-outputid="7aff0fd8-ab6e-4d2b-84a0-6406568b8071" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using cast() to change dtype of Salary column to integer</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>df_int <span class="op">=</span> df.withColumn(<span class="st">"Salary_int"</span>, col(<span class="st">"Salary"</span>).cast(<span class="st">"int"</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>df_int.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>[('Name', 'string'),
+ ('Team', 'string'),
+ ('Position', 'string'),
+ ('Birthday', 'string'),
+ ('Salary', 'bigint'),
+ ('Salary_int', 'int')]</code></pre>
+</div>
+</div>
+<div id="cell-29" class="cell" data-outputid="99e1c29c-009d-4de6-e916-2df4deaa0f63" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using to_date() to cast "Birthday" col to date dtype</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> to_date</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>spark.conf.<span class="bu">set</span>(<span class="st">"spark.sql.legacy.timeParserPolicy"</span>, <span class="st">"LEGACY"</span>) <span class="co"># Done if using years before 2000, as this df is</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>df_date <span class="op">=</span> df.withColumn(<span class="st">"DOB"</span>, to_date(<span class="st">"Birthday"</span>, <span class="st">"M/d/yy"</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>df_date.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>[('Name', 'string'),
+ ('Team', 'string'),
+ ('Position', 'string'),
+ ('Birthday', 'string'),
+ ('Salary', 'bigint'),
+ ('DOB', 'date')]</code></pre>
+</div>
+</div>
+</section>
+<section id="filtering" class="level2">
+<h2 class="anchored" data-anchor-id="filtering">Filtering</h2>
+<div id="cell-31" class="cell" data-outputid="a1487a46-b471-4071-a0c8-4faddfc3e7d3" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering by a condition</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>df_cond <span class="op">=</span> (</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(col(<span class="st">"Salary"</span>) <span class="op">&gt;</span> <span class="dv">30000000</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    .orderBy(desc(<span class="st">"Salary"</span>))</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    .show(<span class="dv">5</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+-----------------+--------------------+--------+--------+--------+
+|             Name|                Team|Position|Birthday|  Salary|
++-----------------+--------------------+--------+--------+--------+
+|    Stephen Curry|Golden State Warr...|      PG| 3/14/88|40231758|
+|       Chris Paul|Oklahoma City Thu...|      PG|  5/6/85|38506482|
+|Russell Westbrook|     Houston Rockets|      PG|11/12/88|38506482|
+|        John Wall|  Washington Wizards|      PG|  9/6/90|38199000|
+|     James Harden|     Houston Rockets|      PG| 8/26/89|38199000|
++-----------------+--------------------+--------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-32" class="cell" data-outputid="804eb3ec-4256-4eeb-a3e9-827222dd3e38" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering using isin()</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>df_isin <span class="op">=</span> (</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(col(<span class="st">'Team'</span>).isin(<span class="st">'Houston Rockets'</span>, <span class="st">'Washington Wizards'</span>, <span class="st">'Miami Heat'</span>))</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    .show(<span class="dv">5</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+---------------+------------------+--------+--------+--------+
+|           Name|              Team|Position|Birthday|  Salary|
++---------------+------------------+--------+--------+--------+
+|  Kendrick Nunn|        Miami Heat|      SG|  8/3/95| 1416852|
+|  Rui Hachimura|Washington Wizards|      PF|  2/8/98| 4469160|
+|Michael Frazier|   Houston Rockets|       G|  3/8/94|   79568|
+|   Bradley Beal|Washington Wizards|      SG| 6/28/93|27093018|
+|  Thomas Bryant|Washington Wizards|       C| 7/31/97| 8000000|
++---------------+------------------+--------+--------+--------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-33" class="cell" data-outputid="35dfeac1-733b-47d2-9c99-ee305531a12c" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering using between()</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>df_btwn <span class="op">=</span> (</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(col(<span class="st">"Salary"</span>).between(<span class="dv">2000000</span>, <span class="dv">2050000</span>))</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    .show()</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------------+--------------------+--------+--------+-------+
+|                Name|                Team|Position|Birthday| Salary|
++--------------------+--------------------+--------+--------+-------+
+|        Torrey Craig|      Denver Nuggets|      SF|12/19/90|2000000|
+|          Trey Burke|  Philadelphia 76ers|      PG|11/12/92|2028594|
+|         Noah Vonleh|Minnesota Timberw...|       C| 8/24/95|2000000|
+|        Ben McLemore|     Houston Rockets|      SG| 2/11/93|2028594|
+|        Troy Daniels|  Los Angeles Lakers|      SG| 7/15/91|2028594|
+|        Mike Muscala|Oklahoma City Thu...|       C|  7/1/91|2028594|
+|      Caleb Swanigan|    Sacramento Kings|      PF| 4/18/97|2033160|
+|       Dylan Windler| Cleveland Cavaliers|      GF| 9/22/96|2035800|
+|       Edmond Sumner|      Indiana Pacers|      PG|12/31/95|2000000|
+|       Iman Shumpert|       Brooklyn Nets|      PG| 6/26/90|2031676|
+|Michael Carter-Wi...|       Orlando Magic|      PG|10/10/91|2028594|
++--------------------+--------------------+--------+--------+-------+
+</code></pre>
+</div>
+</div>
+</section>
+<section id="dealing-with-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="dealing-with-missing-values">Dealing with Missing Values</h2>
+<div id="cell-35" class="cell" data-outputid="6b81ea92-40a0-4416-f01b-a1da3fb145e9" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for Missing Vals using isNull() and isNotNull()</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>df_n1 <span class="op">=</span>(</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(col(<span class="st">"Salary"</span>).isNull())</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    .count()</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>df_n1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>0</code></pre>
+</div>
+</div>
+<div id="cell-36" class="cell" data-outputid="c0b6cead-0312-40cc-88fd-fdecf7d4526d" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>df_n1 <span class="op">=</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(col(<span class="st">"Salary"</span>).isNotNull())</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    .count()</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>df_n1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>450</code></pre>
+</div>
+</div>
+<div id="cell-37" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dropping rows with Null values using .na.drop()</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dropping ANY row that has a null value in ANY columns - default setting of how parameter</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>df_any <span class="op">=</span> (</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    df.na.drop()</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add in how = 'all' param to drop rows that have ALL columns null</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>df_all <span class="op">=</span> (</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    df.na.drop(how <span class="op">=</span> <span class="st">'all'</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dropping with a subset, will only drop rows that have null in Name and Team cols</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>df_sub <span class="op">=</span> (</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    df.na.drop(subset <span class="op">=</span> [<span class="st">'Name'</span>, <span class="st">'Team'</span>])</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replacing Null values using na.fill()</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filling a specific cols nulls with a value</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>df_fill <span class="op">=</span> (</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    df.na</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    .fill(value <span class="op">=</span> <span class="op">-</span><span class="dv">999</span>, subset <span class="op">=</span> [<span class="st">'Salary'</span>])</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filling more than one col with a dict</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>df_fill_mult <span class="op">=</span> (</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    df.na</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    .fill({<span class="st">'Salary'</span>: <span class="op">-</span><span class="dv">999</span>,</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>           <span class="st">'Team'</span>: <span class="st">'N/A'</span>})</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="duplicate-operations" class="level2">
+<h2 class="anchored" data-anchor-id="duplicate-operations">Duplicate operations</h2>
+<div id="cell-40" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># distinct() method will return a new df with duplicate rows removed, only unique obs left</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>df_dist <span class="op">=</span> (</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    .select(<span class="st">'Team'</span>, <span class="st">'Name'</span>)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    .distinct</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-41" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using dropDuplicates() with and w/out subset</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>df_drop <span class="op">=</span> df.dropDuplicates() <span class="co"># will remove all rows that are exact duplicates across all columns</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>df_drop_sub <span class="op">=</span> df.dropDuplicates([<span class="st">'Team'</span>]) <span class="co"># Will remove rows that have duplicates in the Team column (not a good thing to do here, but shows what it does)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="group-operations-window" class="level2">
+<h2 class="anchored" data-anchor-id="group-operations-window">Group operations (&amp; Window)</h2>
+<ul>
+<li><code>groupBy()</code> method is used to work with data at a grouped level</li>
+<li>Returns a <code>GroupedData</code> object</li>
+</ul>
+<div id="cell-44" class="cell" data-outputid="d0bd909a-a6e7-4e16-dc9b-cebbc2877fd9" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>df_groups <span class="op">=</span> df.groupBy(<span class="st">'Position'</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>df_groups <span class="co"># Below shows that df_groups is a GroupedData object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>GroupedData[grouping expressions: [Position], value: [Name: string, Team: string ... 3 more fields], type: GroupBy]</code></pre>
+</div>
+</div>
+<div id="cell-45" class="cell" data-outputid="429d8ac5-e905-4394-9a1b-365e6de19a92" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Showing number of groups</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>df_groups.count().show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------+-----+
+|Position|count|
++--------+-----+
+|      FC|    1|
+|      PF|   96|
+|       F|    5|
+|      PG|   98|
+|      SF|   76|
+|       C|   88|
+|      SG|   74|
+|       G|   10|
+|      GF|    2|
++--------+-----+
+</code></pre>
+</div>
+</div>
+<div id="cell-46" class="cell" data-outputid="f01a0364-0d31-480c-f236-d8f732d43239" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using agg functions for each group</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>df_groups.avg(<span class="st">"Salary"</span>).show()</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>df_groups.<span class="bu">sum</span>(<span class="st">"Salary"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------+-----------------+
+|Position|      avg(Salary)|
++--------+-----------------+
+|      FC|          79568.0|
+|      PF|        7223613.5|
+|       F|        2322338.4|
+|      PG|        9781712.0|
+|      SF|7466574.565789473|
+|       C|9686050.784090908|
+|      SG|4781786.243243244|
+|       G|         372833.4|
+|      GF|        1467055.0|
++--------+-----------------+
+
++--------+-----------+
+|Position|sum(Salary)|
++--------+-----------+
+|      FC|      79568|
+|      PF|  693466896|
+|       F|   11611692|
+|      PG|  958607776|
+|      SF|  567459667|
+|       C|  852372469|
+|      SG|  353852182|
+|       G|    3728334|
+|      GF|    2934110|
++--------+-----------+
+</code></pre>
+</div>
+</div>
+<div id="cell-47" class="cell" data-outputid="f433245f-2e42-4d48-8373-443ca479ca07" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group Agg with many cols</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> <span class="bu">min</span>, <span class="bu">max</span>, mean</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>team_group <span class="op">=</span> (</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    df.groupBy(<span class="st">'Team'</span>).agg(</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">min</span>(<span class="st">"Salary"</span>).alias(<span class="st">'min_sal'</span>),</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">max</span>(<span class="st">'Salary'</span>).alias(<span class="st">'max_sal'</span>),</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>        mean(<span class="st">"Salary"</span>).alias(<span class="st">"mean_sal"</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    ).show(<span class="dv">5</span>)</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+--------------------+-------+--------+-----------------+
+|                Team|min_sal| max_sal|         mean_sal|
++--------------------+-------+--------+-----------------+
+|        Phoenix Suns|  79568|27285000|6791594.066666666|
+|      Boston Celtics|  79568|32742000|       7238863.25|
+|    Dallas Mavericks|  79568|27285000|7432050.846153846|
+|New Orleans Pelicans|  79568|26131111|      6512430.125|
+|       Brooklyn Nets|  79568|37199000|7215064.764705882|
++--------------------+-------+--------+-----------------+
+only showing top 5 rows
+</code></pre>
+</div>
+</div>
+<div id="cell-48" class="cell" data-outputid="68e7d42c-d101-4aec-d299-f32ad029de27" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using a window function to add group level stats to og data frame</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.window <span class="im">import</span> Window</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> avg</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> Window.partitionBy(<span class="st">"Team"</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>df_w_mean <span class="op">=</span> df_.withColumn(</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_salary_by_team'</span>,</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    avg(col(<span class="st">"Salary"</span>)).over(w)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+----------------+--------------+--------+--------+--------+-------------------+
+|            Name|          Team|Position|Birthday|  Salary|mean_salary_by_team|
++----------------+--------------+--------+--------+--------+-------------------+
+|   Kevin Huerter| Atlanta Hawks|      SG| 8/27/98| 2636280|  6503699.866666666|
+|     Evan Turner| Atlanta Hawks|      PG|10/27/88|18606556|  6503699.866666666|
+|    John Collins| Atlanta Hawks|      PF| 9/23/97| 2686560|  6503699.866666666|
+|    Vince Carter| Atlanta Hawks|      PF| 1/26/77| 2564753|  6503699.866666666|
+|Chandler Parsons| Atlanta Hawks|      SF|10/25/88|25102512|  6503699.866666666|
+|    Damian Jones| Atlanta Hawks|       C| 6/30/95| 2305057|  6503699.866666666|
+|    Allen Crabbe| Atlanta Hawks|      SG|  4/9/92|18500000|  6503699.866666666|
+|     Cam Reddish| Atlanta Hawks|      SF|  9/1/99| 4245720|  6503699.866666666|
+|   Charlie Brown| Atlanta Hawks|      SG|  2/2/97|   79568|  6503699.866666666|
+| De'Andre Hunter| Atlanta Hawks|      SF| 12/2/97| 7068360|  6503699.866666666|
+| Brandon Goodwin| Atlanta Hawks|      PG| 10/2/95|   79568|  6503699.866666666|
+|  Tyrone Wallace| Atlanta Hawks|      PG| 6/10/94| 1620564|  6503699.866666666|
+|   Jabari Parker| Atlanta Hawks|      PF| 3/15/95| 6500000|  6503699.866666666|
+|        Alex Len| Atlanta Hawks|       C| 6/16/93| 4160000|  6503699.866666666|
+|  Bruno Fernando| Atlanta Hawks|       C| 8/15/98| 1400000|  6503699.866666666|
+|    Marcus Smart|Boston Celtics|      PG|  3/6/94|12553571|         7238863.25|
+|  Brad Wanamaker|Boston Celtics|      PG| 7/25/89| 1445697|         7238863.25|
+|  Grant Williams|Boston Celtics|      PF|11/30/98| 2379840|         7238863.25|
+|  Tremont Waters|Boston Celtics|      PG| 1/10/98|   79568|         7238863.25|
+|    Daniel Theis|Boston Celtics|       C|  4/4/92| 5000000|         7238863.25|
++----------------+--------------+--------+--------+--------+-------------------+
+only showing top 20 rows
+</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript" src="links.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Powered with GitHub, Quarto and Rstudio<br>© Daniel Noone, 2023</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

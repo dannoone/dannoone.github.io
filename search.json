@@ -7,74 +7,88 @@
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "danl_320.html",
-    "href": "danl_320.html",
-    "title": "DANL 320",
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html",
+    "title": "PySpark Basics | Hw 1 Post",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+    "text": "A distributed processing system which is mainly used for large sizes of data sets\nProvides multiple libraries:\n\nParallel processing\nMachine learning\netc.\n\nSpark Structure on Cluster of Computers\n\nDriver communicates with cluster manager to get worker nodes\nCluster manager allocates the necessary resources (nodes) and assigns pieces of the total process\nWorker nodes perform given tasks (pieces of a larger process) and return the result to the Driver node"
   },
   {
-    "objectID": "danl_310.html",
-    "href": "danl_310.html",
-    "title": "DANL 310",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nggplot Basics | Hw 1 Post\n\n\nIn this post the basics of ggplot2 syntax with be discussed\n\n\n\n\n\nFeb 13, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL | Lec. Notes\n\n\n\n\n\n\n\n\nFeb 12, 2025\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#counting-operations",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#counting-operations",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Counting operations",
+    "text": "Counting operations\n\nfrom pyspark.sql.functions import countDistinct\n\nnum_teams = df.select(countDistinct('Team')).collect()[0][0]\nnum_teams # Simply returns number of distinct teams\n\n30\n\n\n\ndf.groupBy(\"Team\").count().show(5)\n# groups df by team, counts each occurance of team (so num players) and displays first 5\n\n+--------------------+-----+\n|                Team|count|\n+--------------------+-----+\n|        Phoenix Suns|   15|\n|      Boston Celtics|   16|\n|    Dallas Mavericks|   13|\n|New Orleans Pelicans|   16|\n|       Brooklyn Nets|   17|\n+--------------------+-----+\nonly showing top 5 rows"
   },
   {
-    "objectID": "class_blog_posts/welcome/index.html",
-    "href": "class_blog_posts/welcome/index.html",
-    "title": "Welcome All!",
-    "section": "",
-    "text": "Welcome to my blog powered by Quarto and GitHub!!\n\nAs a Data Analytics major, it is helpful to hone my abilities by doing exploratory data analysis. With that, I will be posting little projects here and there on my website, feel free to take a look!"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#ordering-operations",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#ordering-operations",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Ordering operations",
+    "text": "Ordering operations\n\ndf.orderBy('Name').show(5) # Sorts asc (by default) by single col\n\n+-----------------+--------------------+--------+--------+--------+\n|             Name|                Team|Position|Birthday|  Salary|\n+-----------------+--------------------+--------+--------+--------+\n|     Aaron Gordon|       Orlando Magic|      PF| 9/16/95|19863636|\n|    Aaron Holiday|      Indiana Pacers|      PG| 9/30/96| 2239200|\n|      Abdel Nader|Oklahoma City Thu...|      SF| 9/25/93| 1618520|\n|      Adam Mokoka|       Chicago Bulls|       G| 7/18/98|   79568|\n|Admiral Schofield|  Washington Wizards|      SF| 3/30/97| 1000000|\n+-----------------+--------------------+--------+--------+--------+\nonly showing top 5 rows\n\n\n\n\nfrom pyspark.sql.functions import desc\ndf.orderBy(desc('Salary')).show(5) # sort by salary desc\n\n+-----------------+--------------------+--------+--------+--------+\n|             Name|                Team|Position|Birthday|  Salary|\n+-----------------+--------------------+--------+--------+--------+\n|    Stephen Curry|Golden State Warr...|      PG| 3/14/88|40231758|\n|Russell Westbrook|     Houston Rockets|      PG|11/12/88|38506482|\n|       Chris Paul|Oklahoma City Thu...|      PG|  5/6/85|38506482|\n|        John Wall|  Washington Wizards|      PG|  9/6/90|38199000|\n|     James Harden|     Houston Rockets|      PG| 8/26/89|38199000|\n+-----------------+--------------------+--------+--------+--------+\nonly showing top 5 rows\n\n\n\n\ndf.orderBy(['Team', desc('Salary')]).show(5)\n# sort by multiple cols\n\n+----------------+-------------+--------+--------+--------+\n|            Name|         Team|Position|Birthday|  Salary|\n+----------------+-------------+--------+--------+--------+\n|Chandler Parsons|Atlanta Hawks|      SF|10/25/88|25102512|\n|     Evan Turner|Atlanta Hawks|      PG|10/27/88|18606556|\n|    Allen Crabbe|Atlanta Hawks|      SG|  4/9/92|18500000|\n| De'Andre Hunter|Atlanta Hawks|      SF| 12/2/97| 7068360|\n|   Jabari Parker|Atlanta Hawks|      PF| 3/15/95| 6500000|\n+----------------+-------------+--------+--------+--------+\nonly showing top 5 rows"
   },
   {
-    "objectID": "class_blog.html",
-    "href": "class_blog.html",
-    "title": "Class Blog Posts",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWelcome All!\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nDaniel Noone\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#adding-columns",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#adding-columns",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Adding columns",
+    "text": "Adding columns\n\n# Adding columns with withcolumn()\nfrom pyspark.sql.functions import col\ndf_add = df.withColumn('salary_k', col('Salary')/ 1000).show(5)\n\n+--------------+------------------+--------+--------+-------+--------+\n|          Name|              Team|Position|Birthday| Salary|salary_k|\n+--------------+------------------+--------+--------+-------+--------+\n|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|1445697|1445.697|\n|Christian Wood|   Detroit Pistons|      PF| 9/27/95|1645357|1645.357|\n| PJ Washington| Charlotte Hornets|      PF| 8/23/98|3831840| 3831.84|\n|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|7317074|7317.074|\n| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|  79568|  79.568|\n+--------------+------------------+--------+--------+-------+--------+\nonly showing top 5 rows"
   },
   {
-    "objectID": "class_projects.html",
-    "href": "class_projects.html",
-    "title": "Class Projects",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#removing-columns",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#removing-columns",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Removing columns",
+    "text": "Removing columns\n\n# Removing cols with drop()\ndf_drop = df.drop('Salary').show(5)\n\n+--------------+------------------+--------+--------+\n|          Name|              Team|Position|Birthday|\n+--------------+------------------+--------+--------+\n|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|\n|Christian Wood|   Detroit Pistons|      PF| 9/27/95|\n| PJ Washington| Charlotte Hornets|      PF| 8/23/98|\n|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|\n| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|\n+--------------+------------------+--------+--------+\nonly showing top 5 rows"
   },
   {
-    "objectID": "danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html",
-    "href": "danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html",
-    "title": "DANL 310 | ggplot2 basics notes",
-    "section": "",
-    "text": "Packages & DataFrame\n\nlibrary(gapminder)\nlibrary(tidyverse)\nlibrary(skimr)\ngapminder &lt;- gapminder::gapminder\nskim(gapminder)\n\n\nData summary\n\n\nName\ngapminder\n\n\nNumber of rows\n1704\n\n\nNumber of columns\n6\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n2\n\n\nnumeric\n4\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\ncountry\n0\n1\nFALSE\n142\nAfg: 12, Alb: 12, Alg: 12, Ang: 12\n\n\ncontinent\n0\n1\nFALSE\n5\nAfr: 624, Asi: 396, Eur: 360, Ame: 300\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nyear\n0\n1\n1979.50\n17.27\n1952.00\n1965.75\n1979.50\n1993.25\n2007.0\n▇▅▅▅▇\n\n\nlifeExp\n0\n1\n59.47\n12.92\n23.60\n48.20\n60.71\n70.85\n82.6\n▁▆▇▇▇\n\n\npop\n0\n1\n29601212.32\n106157896.74\n60011.00\n2793664.00\n7023595.50\n19585221.75\n1318683096.0\n▇▁▁▁▁\n\n\ngdpPercap\n0\n1\n7215.33\n9857.45\n241.17\n1202.06\n3531.85\n9325.46\n113523.1\n▇▁▁▁▁\n\n\n\n\nmpg &lt;- mpg\ndiamonds &lt;- diamonds\n\n\n\nMaking a Plot\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(alpha = 0.25, color = 'blue') + \n  geom_smooth(method = 'gam', color = 'maroon')\n\n\n\n\n\n\n\n\n\n\nPlot with color argument in aes() mapping\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp,\n                          color = continent))\np + \n  geom_point(alpha = 0.5) + \n  geom_smooth() +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\nPlot with aesthetics set in individual geoms\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(color = 'purple') +\n  geom_smooth(color = 'orange', method = 'loess', se = F, size = 1.5) # different non-linear method, and shading for error false\n\n\n\n\n\n\n\n\n\n\nUsing scale_*() and labs() functions with plot\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(alpha = 0.3) +\n  geom_smooth() +\n  scale_x_log10(labels = scales::dollar) +\n  labs(x = \"GDP Per Capita\", y = \"Life Expectancy in Years\",\n        title = \"Economic Growth and Life Expectancy\",\n        subtitle = \"Data points are country-years\",\n        caption = \"Source: Gapminder.\")\n\n\n\n\n\n\n\n\n\n\nCan have different aes() mappings over different geoms\n\np &lt;- ggplot(data = gapminder, \n            mapping = aes(x = gdpPercap, y = lifeExp))\n\np + geom_point(mapping = aes(color = continent)) +\n    geom_smooth(method = \"loess\")  +\n    scale_x_continuous(trans = scales::log_trans())  # natural log\n\n\n\n\n\n\n\n\n\n\nHistogram and Freq Poly geoms with binwidth\n\nggplot(data = diamonds, mapping = aes(x = price)) +\n  geom_histogram(binwidth = 500, fill = 'navy') +\n  geom_freqpoly(color = 'maroon', linewidth = 1.25, binwidth = 500)\n\n\n\n\n\n\n\n\n\n\nFacet wrap with scales param\n\nggplot(data = diamonds, mapping = aes(x = price)) +\n  geom_histogram(binwidth = 30)+\n  facet_wrap(~cut, scales = 'free_y') # Allows for the y_scale to be free, in this case fair cut diamond price distribution is hard to see without free_y for scales\n\n\n\n\n\n\n\n\n\n\nSales df loading\n\nsale_df &lt;- read_csv(\n  \"https://bcdanl.github.io/data/home_sales_nyc.csv\")\n\n\n\nHistograms with log10(x)\n\nggplot(data = sale_df,\n       mapping = aes(x = sale.price))+\n  geom_histogram(binwidth = 30000, fill = 'steelblue')\n\n\n\n\n\n\n\nggplot(data = sale_df,\n       mapping = aes(x = log10(sale.price)))+\n  geom_histogram(bins = 200, fill = 'steelblue')\n\n\n\n\n\n\n\n\n\n\nBar geoms with stat = ‘identity’\n\nggplot(data = diamonds,\n       mapping = aes(x = cut, fill = cut))+\n  geom_bar()\n\n\n\n\n\n\n\nggplot(data = diamonds,\n       mapping = aes(x = cut, y = price))+\n  geom_bar(stat = 'identity')# Doesn't make sense to do here, but allows you to set your own y mapping to override count default, geom_col() can also be used which just allows you to set bar height with y in aes(), ggplot also used alphebetical order by default to map out categories, can factor with a given # of levels to specify order, ie; \"Fair\"&lt;\"Good\"&lt;\"Ideal\"&lt;\"Premium\"&lt;\"Very Good\"\n\n\n\n\n\n\n\n\n\n\nBar geoms with proportion instead of count\n\nggplot(data = diamonds, \n       mapping = aes(x = cut,\n                     y = after_stat(prop), \n                     group = 1.75))+\n  geom_bar()# have to also put group = some number inside of aes() in order for it to calc proportions successfully\n\n\n\n\n\n\n\n\n\n\nStat summary\n\nggplot(data = diamonds)+\n  stat_summary(\n    mapping = aes(x = cut, y = depth),\n    fun.min = min, # If don't include these, will just be dots representing whatever is after fun =\n    fun.max = max,\n    fun = median # Can also put mean instead of median\n  )\n\n\n\n\n\n\n\n\n\n\nColor and fill asthetic (position adjustment, primarily bar charts)\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(x = cut,\n                 fill = cut # color will outline bars, fill will fill colors into bars,\n                 ))+ # all done by var set to \n  guides(fill = \"none\")# guides can remove legend, and can alter formatting for legends and theme stuff\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ))\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ), position = 'dodge') # If don't include 'dodge' bars will be stacked, if do will have multiple bars per x-axis category, clustered bar chart\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ), position = 'fill')+\n  labs(y = 'proportion')# Shows proportion of each clarity value per each cut value\n\n\n\n\n\n\n\n\n\n\nCoordinate Systems\n\nggplot(data = mpg,\n       mapping =\n         aes(x = cty,\n             y = hwy))+\n  geom_point()+\n  geom_abline()\n\n\n\n\n\n\n\n\n\nggplot(data = mpg,\n       mapping =\n         aes(x = cty,\n             y = hwy))+\n  geom_point()+\n  geom_abline()+\n  coord_fixed()"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#renaming-columns",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#renaming-columns",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Renaming columns",
+    "text": "Renaming columns\n\n# Renaming columns with withColumnsRenamed()\ndf_ren = df.withColumnRenamed('Team', 'Team Name')\ndf_ren.show(5)\n\n+--------------+------------------+--------+--------+-------+\n|          Name|         Team Name|Position|Birthday| Salary|\n+--------------+------------------+--------+--------+-------+\n|  Shake Milton|Philadelphia 76ers|      SG| 9/26/96|1445697|\n|Christian Wood|   Detroit Pistons|      PF| 9/27/95|1645357|\n| PJ Washington| Charlotte Hornets|      PF| 8/23/98|3831840|\n|  Derrick Rose|   Detroit Pistons|      PG| 10/4/88|7317074|\n| Marial Shayok|Philadelphia 76ers|       G| 7/26/95|  79568|\n+--------------+------------------+--------+--------+-------+\nonly showing top 5 rows"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Daniel A. Noone",
-    "section": "",
-    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#aggregations-and-summary-statistics",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#aggregations-and-summary-statistics",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Aggregations and Summary Statistics",
+    "text": "Aggregations and Summary Statistics\n\n# Aggregations and Summary Stats\n\ndf.selectExpr(\n    'mean(Salary) as mean_sal',\n    'min(Salary) as min_sal',\n    'max(Salary) as max_sal',\n    'stddev_pop(Salary) as std_salary'\n).show()\n\n+-----------------+-------+--------+-----------------+\n|         mean_sal|min_sal| max_sal|       std_salary|\n+-----------------+-------+--------+-----------------+\n|7653583.764444444|  79568|40231758|9278483.657952718|\n+-----------------+-------+--------+-----------------+"
   },
   {
-    "objectID": "index.html#who-is-daniel-noone",
-    "href": "index.html#who-is-daniel-noone",
-    "title": "Daniel A. Noone",
-    "section": "",
-    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#converting-data-types",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#converting-data-types",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Converting Data Types",
+    "text": "Converting Data Types\n\n# Using cast() to change dtype of Salary column to integer\ndf_int = df.withColumn(\"Salary_int\", col(\"Salary\").cast(\"int\"))\ndf_int.dtypes\n\n[('Name', 'string'),\n ('Team', 'string'),\n ('Position', 'string'),\n ('Birthday', 'string'),\n ('Salary', 'bigint'),\n ('Salary_int', 'int')]\n\n\n\n# Using to_date() to cast \"Birthday\" col to date dtype\nfrom pyspark.sql.functions import to_date\nspark.conf.set(\"spark.sql.legacy.timeParserPolicy\", \"LEGACY\") # Done if using years before 2000, as this df is\ndf_date = df.withColumn(\"DOB\", to_date(\"Birthday\", \"M/d/yy\"))\ndf_date.dtypes\n\n[('Name', 'string'),\n ('Team', 'string'),\n ('Position', 'string'),\n ('Birthday', 'string'),\n ('Salary', 'bigint'),\n ('DOB', 'date')]"
   },
   {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "Daniel A. Noone",
-    "section": "Education",
-    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. Data Analytics | Aug 2022 - May 2025 \nRochester Institute of Technology | Henrietta, NY  M.S. Artificial Intelligence | August 2025 - Undetermined"
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#filtering",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#filtering",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Filtering",
+    "text": "Filtering\n\n# Filtering by a condition\n\ndf_cond = (\n    df\n    .filter(col(\"Salary\") &gt; 30000000)\n    .orderBy(desc(\"Salary\"))\n    .show(5)\n)\n\n+-----------------+--------------------+--------+--------+--------+\n|             Name|                Team|Position|Birthday|  Salary|\n+-----------------+--------------------+--------+--------+--------+\n|    Stephen Curry|Golden State Warr...|      PG| 3/14/88|40231758|\n|       Chris Paul|Oklahoma City Thu...|      PG|  5/6/85|38506482|\n|Russell Westbrook|     Houston Rockets|      PG|11/12/88|38506482|\n|        John Wall|  Washington Wizards|      PG|  9/6/90|38199000|\n|     James Harden|     Houston Rockets|      PG| 8/26/89|38199000|\n+-----------------+--------------------+--------+--------+--------+\nonly showing top 5 rows\n\n\n\n\n# Filtering using isin()\n\ndf_isin = (\n    df\n    .filter(col('Team').isin('Houston Rockets', 'Washington Wizards', 'Miami Heat'))\n    .show(5)\n)\n\n+---------------+------------------+--------+--------+--------+\n|           Name|              Team|Position|Birthday|  Salary|\n+---------------+------------------+--------+--------+--------+\n|  Kendrick Nunn|        Miami Heat|      SG|  8/3/95| 1416852|\n|  Rui Hachimura|Washington Wizards|      PF|  2/8/98| 4469160|\n|Michael Frazier|   Houston Rockets|       G|  3/8/94|   79568|\n|   Bradley Beal|Washington Wizards|      SG| 6/28/93|27093018|\n|  Thomas Bryant|Washington Wizards|       C| 7/31/97| 8000000|\n+---------------+------------------+--------+--------+--------+\nonly showing top 5 rows\n\n\n\n\n# Filtering using between()\ndf_btwn = (\n    df\n    .filter(col(\"Salary\").between(2000000, 2050000))\n    .show()\n)\n\n+--------------------+--------------------+--------+--------+-------+\n|                Name|                Team|Position|Birthday| Salary|\n+--------------------+--------------------+--------+--------+-------+\n|        Torrey Craig|      Denver Nuggets|      SF|12/19/90|2000000|\n|          Trey Burke|  Philadelphia 76ers|      PG|11/12/92|2028594|\n|         Noah Vonleh|Minnesota Timberw...|       C| 8/24/95|2000000|\n|        Ben McLemore|     Houston Rockets|      SG| 2/11/93|2028594|\n|        Troy Daniels|  Los Angeles Lakers|      SG| 7/15/91|2028594|\n|        Mike Muscala|Oklahoma City Thu...|       C|  7/1/91|2028594|\n|      Caleb Swanigan|    Sacramento Kings|      PF| 4/18/97|2033160|\n|       Dylan Windler| Cleveland Cavaliers|      GF| 9/22/96|2035800|\n|       Edmond Sumner|      Indiana Pacers|      PG|12/31/95|2000000|\n|       Iman Shumpert|       Brooklyn Nets|      PG| 6/26/90|2031676|\n|Michael Carter-Wi...|       Orlando Magic|      PG|10/10/91|2028594|\n+--------------------+--------------------+--------+--------+-------+"
   },
   {
-    "objectID": "index.html#experience",
-    "href": "index.html#experience",
-    "title": "Daniel A. Noone",
-    "section": "Experience",
-    "text": "Experience\nMuch experience in data collection and transformation, in both R and Python languages. Also well versed in the fundamental machine learning models and their optimization."
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#dealing-with-missing-values",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#dealing-with-missing-values",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Dealing with Missing Values",
+    "text": "Dealing with Missing Values\n\n# Check for Missing Vals using isNull() and isNotNull()\n\ndf_n1 =(\n    df\n    .filter(col(\"Salary\").isNull())\n    .count()\n)\ndf_n1\n\n0\n\n\n\ndf_n1 =(\n    df\n    .filter(col(\"Salary\").isNotNull())\n    .count()\n)\ndf_n1\n\n450\n\n\n\n# Dropping rows with Null values using .na.drop()\n\n  # Dropping ANY row that has a null value in ANY columns - default setting of how parameter\ndf_any = (\n    df.na.drop()\n)\n\n  # Add in how = 'all' param to drop rows that have ALL columns null\ndf_all = (\n    df.na.drop(how = 'all')\n)\n\n  # Dropping with a subset, will only drop rows that have null in Name and Team cols\ndf_sub = (\n    df.na.drop(subset = ['Name', 'Team'])\n)\n\n\n# Replacing Null values using na.fill()\n\n  # Filling a specific cols nulls with a value\ndf_fill = (\n    df.na\n    .fill(value = -999, subset = ['Salary'])\n)\n\n  # Filling more than one col with a dict\ndf_fill_mult = (\n    df.na\n    .fill({'Salary': -999,\n           'Team': 'N/A'})\n)"
+  },
+  {
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#duplicate-operations",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#duplicate-operations",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Duplicate operations",
+    "text": "Duplicate operations\n\n# distinct() method will return a new df with duplicate rows removed, only unique obs left\ndf_dist = (\n    df\n    .select('Team', 'Name')\n    .distinct\n)\n\n\n# Using dropDuplicates() with and w/out subset\n\ndf_drop = df.dropDuplicates() # will remove all rows that are exact duplicates across all columns\n\ndf_drop_sub = df.dropDuplicates(['Team']) # Will remove rows that have duplicates in the Team column (not a good thing to do here, but shows what it does)"
+  },
+  {
+    "objectID": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#group-operations-window",
+    "href": "danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html#group-operations-window",
+    "title": "PySpark Basics | Hw 1 Post",
+    "section": "Group operations (& Window)",
+    "text": "Group operations (& Window)\n\ngroupBy() method is used to work with data at a grouped level\nReturns a GroupedData object\n\n\ndf_groups = df.groupBy('Position')\ndf_groups # Below shows that df_groups is a GroupedData object\n\nGroupedData[grouping expressions: [Position], value: [Name: string, Team: string ... 3 more fields], type: GroupBy]\n\n\n\n# Showing number of groups\ndf_groups.count().show()\n\n+--------+-----+\n|Position|count|\n+--------+-----+\n|      FC|    1|\n|      PF|   96|\n|       F|    5|\n|      PG|   98|\n|      SF|   76|\n|       C|   88|\n|      SG|   74|\n|       G|   10|\n|      GF|    2|\n+--------+-----+\n\n\n\n\n# Using agg functions for each group\ndf_groups.avg(\"Salary\").show()\ndf_groups.sum(\"Salary\").show()\n\n+--------+-----------------+\n|Position|      avg(Salary)|\n+--------+-----------------+\n|      FC|          79568.0|\n|      PF|        7223613.5|\n|       F|        2322338.4|\n|      PG|        9781712.0|\n|      SF|7466574.565789473|\n|       C|9686050.784090908|\n|      SG|4781786.243243244|\n|       G|         372833.4|\n|      GF|        1467055.0|\n+--------+-----------------+\n\n+--------+-----------+\n|Position|sum(Salary)|\n+--------+-----------+\n|      FC|      79568|\n|      PF|  693466896|\n|       F|   11611692|\n|      PG|  958607776|\n|      SF|  567459667|\n|       C|  852372469|\n|      SG|  353852182|\n|       G|    3728334|\n|      GF|    2934110|\n+--------+-----------+\n\n\n\n\n# Group Agg with many cols\nfrom pyspark.sql.functions import min, max, mean\n\nteam_group = (\n    df.groupBy('Team').agg(\n        min(\"Salary\").alias('min_sal'),\n        max('Salary').alias('max_sal'),\n        mean(\"Salary\").alias(\"mean_sal\")\n    ).show(5)\n)\n\n+--------------------+-------+--------+-----------------+\n|                Team|min_sal| max_sal|         mean_sal|\n+--------------------+-------+--------+-----------------+\n|        Phoenix Suns|  79568|27285000|6791594.066666666|\n|      Boston Celtics|  79568|32742000|       7238863.25|\n|    Dallas Mavericks|  79568|27285000|7432050.846153846|\n|New Orleans Pelicans|  79568|26131111|      6512430.125|\n|       Brooklyn Nets|  79568|37199000|7215064.764705882|\n+--------------------+-------+--------+-----------------+\nonly showing top 5 rows\n\n\n\n\n# Using a window function to add group level stats to og data frame\nfrom pyspark.sql.window import Window\nfrom pyspark.sql.functions import avg\ndf_ = df\n\nw = Window.partitionBy(\"Team\")\n\ndf_w_mean = df_.withColumn(\n    'mean_salary_by_team',\n    avg(col(\"Salary\")).over(w)\n).show()\n\n+----------------+--------------+--------+--------+--------+-------------------+\n|            Name|          Team|Position|Birthday|  Salary|mean_salary_by_team|\n+----------------+--------------+--------+--------+--------+-------------------+\n|   Kevin Huerter| Atlanta Hawks|      SG| 8/27/98| 2636280|  6503699.866666666|\n|     Evan Turner| Atlanta Hawks|      PG|10/27/88|18606556|  6503699.866666666|\n|    John Collins| Atlanta Hawks|      PF| 9/23/97| 2686560|  6503699.866666666|\n|    Vince Carter| Atlanta Hawks|      PF| 1/26/77| 2564753|  6503699.866666666|\n|Chandler Parsons| Atlanta Hawks|      SF|10/25/88|25102512|  6503699.866666666|\n|    Damian Jones| Atlanta Hawks|       C| 6/30/95| 2305057|  6503699.866666666|\n|    Allen Crabbe| Atlanta Hawks|      SG|  4/9/92|18500000|  6503699.866666666|\n|     Cam Reddish| Atlanta Hawks|      SF|  9/1/99| 4245720|  6503699.866666666|\n|   Charlie Brown| Atlanta Hawks|      SG|  2/2/97|   79568|  6503699.866666666|\n| De'Andre Hunter| Atlanta Hawks|      SF| 12/2/97| 7068360|  6503699.866666666|\n| Brandon Goodwin| Atlanta Hawks|      PG| 10/2/95|   79568|  6503699.866666666|\n|  Tyrone Wallace| Atlanta Hawks|      PG| 6/10/94| 1620564|  6503699.866666666|\n|   Jabari Parker| Atlanta Hawks|      PF| 3/15/95| 6500000|  6503699.866666666|\n|        Alex Len| Atlanta Hawks|       C| 6/16/93| 4160000|  6503699.866666666|\n|  Bruno Fernando| Atlanta Hawks|       C| 8/15/98| 1400000|  6503699.866666666|\n|    Marcus Smart|Boston Celtics|      PG|  3/6/94|12553571|         7238863.25|\n|  Brad Wanamaker|Boston Celtics|      PG| 7/25/89| 1445697|         7238863.25|\n|  Grant Williams|Boston Celtics|      PF|11/30/98| 2379840|         7238863.25|\n|  Tremont Waters|Boston Celtics|      PG| 1/10/98|   79568|         7238863.25|\n|    Daniel Theis|Boston Celtics|       C|  4/4/92| 5000000|         7238863.25|\n+----------------+--------------+--------+--------+--------+-------------------+\nonly showing top 20 rows"
   },
   {
     "objectID": "danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html",
@@ -89,13 +103,6 @@
     "title": "DANL | Lec. Notes",
     "section": "Q2",
     "text": "Q2\n\nod &lt;- socviz::organdata\n\n\nQ2a (Cleveland Dotplots, sometimes preferred to barcharts)\n\na &lt;- od %&gt;% \n  group_by(consent_law, country) %&gt;% \n  summarise(dpr_mean = mean(donors, na.rm = T))\n\n`summarise()` has grouped output by 'consent_law'. You can override using the\n`.groups` argument.\n\nggplot(a, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean), colour = consent_law))+\n  geom_point()+\n  theme(legend.position = 'top')+\n  labs(x = 'Donor Procurement Rate', y = '')\n\n\n\n\n\n\n\n\n\n\nQ2b\n\nb &lt;- a\n\nggplot(b, mapping = aes(x = dpr_mean, y = fct_reorder(country, dpr_mean, na.rm = T)))+\n  geom_point()+\n  facet_wrap(~consent_law, ncol = 1, scales = 'free_y')+\n  labs(y = '', x = 'Donor Procurement Rate')\n\n\n\n\n\n\n\n\n\n\nQ2c (dot and whisker plot, gives error bars for st dev)"
-  },
-  {
-    "objectID": "danl_310_mats/danl_hw_1/ggplot_basics_hw_1.html",
-    "href": "danl_310_mats/danl_hw_1/ggplot_basics_hw_1.html",
-    "title": "ggplot Basics | Hw 1 Post",
-    "section": "",
-    "text": "Hi"
   },
   {
     "objectID": "danl_310_mats/danl_hw_1/html_document.html",
@@ -124,5 +131,75 @@
     "title": "ggplot Basics | Hw 1 Post",
     "section": "Apply the applicable geoms and theme or labs modifications",
     "text": "Apply the applicable geoms and theme or labs modifications\n\nGeoms in ggplot2 allow for one to choose which plotting methods are performed and calibrate certain parameters.\n\n\np + geom_point(aes(color = cyl_chr), size = 2, shape = 16)+\n  labs(x = 'Miles per Gallon', y = 'Horsepower', color = 'Cylinders', title = 'Miles Per Gallon vs. Horsepower')+\n  theme_bw()+\n  theme(legend.position = c(0.95, 0.9))+\n  scale_color_manual(values = c('red',  'blue'))\n\n\n\n\n\n\n\n\n\np2 + geom_bar(aes(fill = sport), position = 'dodge', stat = 'identity')+\n  guides(fill = F)+\n  theme_bw()+\n  labs(x = 'Sport', y = 'Mean Body Fat', title = 'Mean Body Fat vs. Sport')"
+  },
+  {
+    "objectID": "class_projects.html",
+    "href": "class_projects.html",
+    "title": "Class Projects",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "class_blog.html",
+    "href": "class_blog.html",
+    "title": "Class Blog Posts",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWelcome All!\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nDaniel Noone\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "class_blog_posts/welcome/index.html",
+    "href": "class_blog_posts/welcome/index.html",
+    "title": "Welcome All!",
+    "section": "",
+    "text": "Welcome to my blog powered by Quarto and GitHub!!\n\nAs a Data Analytics major, it is helpful to hone my abilities by doing exploratory data analysis. With that, I will be posting little projects here and there on my website, feel free to take a look!"
+  },
+  {
+    "objectID": "danl_310.html",
+    "href": "danl_310.html",
+    "title": "DANL 310",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nggplot Basics | Hw 1 Post\n\n\nIn this post the basics of ggplot2 syntax with be discussed\n\n\n\n\n\nFeb 13, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL | Lec. Notes\n\n\n\n\n\n\n\n\nFeb 12, 2025\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html",
+    "href": "danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html",
+    "title": "DANL 310 | ggplot2 basics notes",
+    "section": "",
+    "text": "Packages & DataFrame\n\nlibrary(gapminder)\nlibrary(tidyverse)\nlibrary(skimr)\ngapminder &lt;- gapminder::gapminder\nskim(gapminder)\n\n\nData summary\n\n\nName\ngapminder\n\n\nNumber of rows\n1704\n\n\nNumber of columns\n6\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n2\n\n\nnumeric\n4\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\ncountry\n0\n1\nFALSE\n142\nAfg: 12, Alb: 12, Alg: 12, Ang: 12\n\n\ncontinent\n0\n1\nFALSE\n5\nAfr: 624, Asi: 396, Eur: 360, Ame: 300\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nyear\n0\n1\n1979.50\n17.27\n1952.00\n1965.75\n1979.50\n1993.25\n2007.0\n▇▅▅▅▇\n\n\nlifeExp\n0\n1\n59.47\n12.92\n23.60\n48.20\n60.71\n70.85\n82.6\n▁▆▇▇▇\n\n\npop\n0\n1\n29601212.32\n106157896.74\n60011.00\n2793664.00\n7023595.50\n19585221.75\n1318683096.0\n▇▁▁▁▁\n\n\ngdpPercap\n0\n1\n7215.33\n9857.45\n241.17\n1202.06\n3531.85\n9325.46\n113523.1\n▇▁▁▁▁\n\n\n\n\nmpg &lt;- mpg\ndiamonds &lt;- diamonds\n\n\n\nMaking a Plot\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(alpha = 0.25, color = 'blue') + \n  geom_smooth(method = 'gam', color = 'maroon')\n\n\n\n\n\n\n\n\n\n\nPlot with color argument in aes() mapping\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp,\n                          color = continent))\np + \n  geom_point(alpha = 0.5) + \n  geom_smooth() +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\nPlot with aesthetics set in individual geoms\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(color = 'purple') +\n  geom_smooth(color = 'orange', method = 'loess', se = F, size = 1.5) # different non-linear method, and shading for error false\n\n\n\n\n\n\n\n\n\n\nUsing scale_*() and labs() functions with plot\n\np &lt;- ggplot(data = gapminder,\n            mapping = aes(x = gdpPercap,\n                          y = lifeExp))\np + \n  geom_point(alpha = 0.3) +\n  geom_smooth() +\n  scale_x_log10(labels = scales::dollar) +\n  labs(x = \"GDP Per Capita\", y = \"Life Expectancy in Years\",\n        title = \"Economic Growth and Life Expectancy\",\n        subtitle = \"Data points are country-years\",\n        caption = \"Source: Gapminder.\")\n\n\n\n\n\n\n\n\n\n\nCan have different aes() mappings over different geoms\n\np &lt;- ggplot(data = gapminder, \n            mapping = aes(x = gdpPercap, y = lifeExp))\n\np + geom_point(mapping = aes(color = continent)) +\n    geom_smooth(method = \"loess\")  +\n    scale_x_continuous(trans = scales::log_trans())  # natural log\n\n\n\n\n\n\n\n\n\n\nHistogram and Freq Poly geoms with binwidth\n\nggplot(data = diamonds, mapping = aes(x = price)) +\n  geom_histogram(binwidth = 500, fill = 'navy') +\n  geom_freqpoly(color = 'maroon', linewidth = 1.25, binwidth = 500)\n\n\n\n\n\n\n\n\n\n\nFacet wrap with scales param\n\nggplot(data = diamonds, mapping = aes(x = price)) +\n  geom_histogram(binwidth = 30)+\n  facet_wrap(~cut, scales = 'free_y') # Allows for the y_scale to be free, in this case fair cut diamond price distribution is hard to see without free_y for scales\n\n\n\n\n\n\n\n\n\n\nSales df loading\n\nsale_df &lt;- read_csv(\n  \"https://bcdanl.github.io/data/home_sales_nyc.csv\")\n\n\n\nHistograms with log10(x)\n\nggplot(data = sale_df,\n       mapping = aes(x = sale_price))+\n  geom_histogram(binwidth = 30000, fill = 'steelblue')\n\n\n\n\n\n\n\nggplot(data = sale_df,\n       mapping = aes(x = log10(sale_price)))+\n  geom_histogram(bins = 200, fill = 'steelblue')\n\n\n\n\n\n\n\n\n\n\nBar geoms with stat = ‘identity’\n\nggplot(data = diamonds,\n       mapping = aes(x = cut, fill = cut))+\n  geom_bar()\n\n\n\n\n\n\n\nggplot(data = diamonds,\n       mapping = aes(x = cut, y = price))+\n  geom_bar(stat = 'identity')# Doesn't make sense to do here, but allows you to set your own y mapping to override count default, geom_col() can also be used which just allows you to set bar height with y in aes(), ggplot also used alphebetical order by default to map out categories, can factor with a given # of levels to specify order, ie; \"Fair\"&lt;\"Good\"&lt;\"Ideal\"&lt;\"Premium\"&lt;\"Very Good\"\n\n\n\n\n\n\n\n\n\n\nBar geoms with proportion instead of count\n\nggplot(data = diamonds, \n       mapping = aes(x = cut,\n                     y = after_stat(prop), \n                     group = 1.75))+\n  geom_bar()# have to also put group = some number inside of aes() in order for it to calc proportions successfully\n\n\n\n\n\n\n\n\n\n\nStat summary\n\nggplot(data = diamonds)+\n  stat_summary(\n    mapping = aes(x = cut, y = depth),\n    fun.min = min, # If don't include these, will just be dots representing whatever is after fun =\n    fun.max = max,\n    fun = median # Can also put mean instead of median\n  )\n\n\n\n\n\n\n\n\n\n\nColor and fill asthetic (position adjustment, primarily bar charts)\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(x = cut,\n                 fill = cut # color will outline bars, fill will fill colors into bars,\n                 ))+ # all done by var set to \n  guides(fill = \"none\")# guides can remove legend, and can alter formatting for legends and theme stuff\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ))\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ), position = 'dodge') # If don't include 'dodge' bars will be stacked, if do will have multiple bars per x-axis category, clustered bar chart\n\n\n\n\n\n\n\n\n\nggplot(data = diamonds)+\n  geom_bar(mapping = \n             aes(\n               x = cut,\n               fill = clarity\n             ), position = 'fill')+\n  labs(y = 'proportion')# Shows proportion of each clarity value per each cut value\n\n\n\n\n\n\n\n\n\n\nCoordinate Systems\n\nggplot(data = mpg,\n       mapping =\n         aes(x = cty,\n             y = hwy))+\n  geom_point()+\n  geom_abline()\n\n\n\n\n\n\n\n\n\nggplot(data = mpg,\n       mapping =\n         aes(x = cty,\n             y = hwy))+\n  geom_point()+\n  geom_abline()+\n  coord_fixed()"
+  },
+  {
+    "objectID": "danl_320.html",
+    "href": "danl_320.html",
+    "title": "DANL 320",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nPySpark Basics | Hw 1 Post\n\n\nWithin this post the basics of PySpark will be discussed\n\n\n\n\n\nFeb 14, 2025\n\n\nDaniel Noone\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Daniel A. Noone",
+    "section": "",
+    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
+  },
+  {
+    "objectID": "index.html#who-is-daniel-noone",
+    "href": "index.html#who-is-daniel-noone",
+    "title": "Daniel A. Noone",
+    "section": "",
+    "text": "Senior at SUNY Geneseo majoring in Data Analytics. Academic interests lie in the fields of Artificial Intelligence and Machine Learning. Following the completion of my B.S. in Data Analytics I will be attending the Rochester Institute of Technology to pursue an M.S. in Artificial Intelligence."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Daniel A. Noone",
+    "section": "Education",
+    "text": "Education\nState University of New York at Geneseo | Geneseo, NY  B.S. Data Analytics | Aug 2022 - May 2025 \nRochester Institute of Technology | Henrietta, NY  M.S. Artificial Intelligence | August 2025 - Undetermined"
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Daniel A. Noone",
+    "section": "Experience",
+    "text": "Experience\nMuch experience in data collection and transformation, in both R and Python languages. Also well versed in the fundamental machine learning models and their optimization."
   }
 ]

@@ -103,11 +103,11 @@ sale_df <- read_csv(
 # Histograms with log10(x)
 ```{r}
 ggplot(data = sale_df,
-       mapping = aes(x = sale.price))+
+       mapping = aes(x = sale_price))+
   geom_histogram(binwidth = 30000, fill = 'steelblue')
 
 ggplot(data = sale_df,
-       mapping = aes(x = log10(sale.price)))+
+       mapping = aes(x = log10(sale_price)))+
   geom_histogram(bins = 200, fill = 'steelblue')
 
 
