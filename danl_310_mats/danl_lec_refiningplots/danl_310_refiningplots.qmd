@@ -1,0 +1,507 @@
+---
+title: "DANL 310 | Refining Plots"
+toc: True
+---
+
+# Using color to your advantage:
+  - Should choose color palette based on type of data plotting
+    - ex) Unordered vars need distinct colors, ordered vars need graded color scheme which changes as values change
+    
+ - Choose palettes for mappings thru scale_ functions added to plot for color or fill
+
+## Colors with `RColorBrewer`
+```{r}
+# RColorBrewer provides a wide variety of named palettes
+ # Access using scale_color_brewer() or scale_fill_brewer() with pallete = param
+library(RColorBrewer)
+library(tidyverse)
+library(hrbrthemes)
+library(ggthemes)
+```
+
+![](seq_br.png)
+![](div_br.png)
+![](qual_br.png)
+
+### Example graphs using scale_color_brewer(palette = ...)
+```{r}
+organdata = socviz::organdata
+p <- ggplot(data = organdata,
+            mapping = 
+              aes(x = roads, 
+                  y = donors, 
+                  color = world))
+
+p + geom_point(size = 2) + 
+  scale_color_brewer(
+    palette = "Set2") +
+  theme(legend.position = "top")
+```
+```{r}
+p + geom_point(size = 2) + 
+  scale_color_brewer(
+    palette = "Pastel2") +
+  theme(legend.position = "top")
+```
+```{r}
+p + geom_point(size = 2) + 
+  scale_color_brewer(
+    palette = "Dark2") +
+  theme(legend.position = "top")
+```
+
+## Specifying colors manually
+- Can specify color palettes manually using `scale_color_manual()` or `scale_fill_manual()`
+
+- within a c(), specify colors using 'color name' or hex values (can access hex values [here](https://www.color-hex.com)
+
+### Examples of manual palettes
+```{r}
+p + geom_point(size = 2) + 
+  scale_color_manual(
+    values = c("#3c6ff8", "#afd68d", 
+               "#8467ad", "#82857f")) +
+  theme_ipsum() + 
+  theme(legend.position = "top") 
+```
+## Colorblindness
+- Below action shows the palettes in RColorBrewer
+- Along with a bool column showing if the palette is colorblind friendly or not
+```{r}
+brewer.pal.info
+```
+
+## Layering color and text together
+- Sometimes want to use color to highlight some aspect of data
+```{r}
+county_data <- socviz::county_data
+```
+
+```{r, fig.height=9}
+# DEM Blue and REP Red
+party_colors <- 
+  c("#2E74C0", "#CB454A") 
+
+p0 <- ggplot(
+  data = filter(county_data, 
+                flipped == "No"),
+  mapping = 
+    aes(x = pop, 
+        y = black/100) )
+
+p1 <- p0 + 
+  geom_point(alpha = 0.15, 
+             color = "gray50") 
+p1
+```
+--> Looks very skewed with the normal scale, so use a log10 scale instead
+```{r, fig.height=9}
+ p0 <- ggplot(
+  data = filter(county_data, 
+                flipped == "No"),
+  mapping = 
+    aes(x = pop, 
+        y = black/100) )
+
+p1 <- p0 + 
+  geom_point(alpha = 0.15, 
+             color = "gray50")+
+  scale_x_log10(labels=scales::comma)
+
+p1
+```
+--> Now the data is more normally distributed, looks better as a viz, the last one was flipped == 'No', next will be flipped == 'Yes'
+
+```{r, fig.height=9}
+p2 <- p1 + 
+  geom_point(
+    data = filter(county_data,
+                  flipped == "Yes"),
+    mapping = 
+      aes(x = pop, y = black/100,
+          color = partywinner16)) +
+    scale_color_manual(
+      values = party_colors)
+p2
+```
+--> viz will now be cleaned up and refined label-wise, and y-axis --> % labels
+
+```{r, fig.height=9}
+p3 <- p2 + 
+  scale_y_continuous(
+    labels=scales::percent) +
+  labs(
+    color = 
+      "County flipped to ... ",
+    x = 
+      "County Population (log scale)",
+    y = 
+      "Percent Black Population",
+    title = 
+      "Flipped counties, 2016",
+    caption = 
+      "Counties in gray did not flip.")
+p3
+```
+--> Next viz now labels state on points that were flipped and have % AA > 25
+```{r, fig.height=9}
+library(ggrepel)
+p4 <- p3 + 
+  geom_text_repel(
+    data = 
+      filter(
+       county_data,
+       flipped == "Yes" & black >25),
+    mapping = 
+      aes(x = pop, y = black/100,
+          label = state), 
+    size = 2)
+
+p4 + theme_minimal() + 
+  theme(legend.position="top")
+```
+
+## Changing appearance of plots with `theme()`
+```{r, fig.height=9}
+p4 + theme_economist() +
+  theme(legend.position = "top")
+```
+
+```{r, fig.height=9}
+p4 + theme_wsj() +
+  theme(
+    plot.title = 
+      element_text(size = rel(0.6)), # rel() mean relative size, here sets title 60% of original size
+    legend.title = 
+      element_text(size = rel(0.35)),
+    plot.caption = 
+      element_text(size = rel(0.35)),
+    legend.position = "top")
+```
+
+```{r, fig.height=9}
+p4 + theme(
+  legend.position = "top",
+  plot.title = element_text(
+      size = rel(2),
+      lineheight = .5,
+      family = "Times", # fonts not found, but this is how to set font type
+      face = "bold.italic", # how to set bolt/italic or both
+      color = "orange"),
+  axis.text.x = element_text(
+      size = rel(1.1),
+      family = "Courier",
+      face = "bold",
+      color = "purple")
+  )
+```
+--> `theme()` allows us to have fine control over appearance of our visualizations
+
+```{r, fig.height=9}
+p4 + theme(
+  legend.position = "top",
+  plot.title = element_text(
+    size = rel(2),
+    lineheight = .5,
+    family = "Times",
+    face = "bold.italic",
+    colour = "orange"),
+  axis.text.x = element_blank()
+  ) 
+```
+--> `element_blank()` removes an element, as seen **above** with the x-axis labels
+
+### Example with gss_lon data
+- Showing age distributiin of General Social Survey (GSS) respondents over the years
+
+```{r}
+gss_lon <- socviz::gss_lon
+```
+
+#### Preparation of data
+```{r}
+yrs <- c(seq(1972, 1988, 4), 
+         1993, 
+         seq(1996, 2016, 4))
+
+mean_age <- gss_lon |>
+    filter( !is.na(age), 
+            year %in% yrs) |>
+    group_by(year) |>
+    summarize(
+      xbar = round(
+        mean(age, na.rm = TRUE), 0)
+      ) # Removing obs in age var with missing vals, only for the years in yrs above, calc mean age for each year
+
+mean_age$y <- 0.3 
+
+yr_labs <- data.frame(
+  x = 85, y = 0.8, 
+  year = yrs)  # to position the age as a text label
+```
+
+```{r, fig.height=12}
+p <- ggplot(
+  data = 
+    filter(gss_lon, year %in% yrs),
+  mapping = 
+    aes(x = age))
+
+p1 <- p + 
+  geom_density(
+    fill = "black", color = FALSE,
+    alpha = 0.9, 
+    mapping = aes(y = ..scaled..))
+p1
+```
+
+```{r, fig.height=12}
+p2 <- p1 + 
+  geom_vline(
+    data = filter(
+      mean_age, year %in% yrs),
+    aes(xintercept = xbar), 
+    color = "white", linewidth = 0.5) + 
+  geom_text(
+    data = filter(mean_age, 
+             year %in% yrs),
+    aes(x = xbar, y = y, label = xbar), 
+    nudge_x = 7.5, color = "white", 
+    size = 3.5, hjust = 1) +
+  geom_text(data = filter(
+    yr_labs, year %in% yrs),
+    aes(x = x, y = y, label = year)) 
+p2
+```
+--> `nudge_x` arg pushes label  slightly to right of it's associated x-value
+
+```{r, fig.height=12}
+p3 <- p2  + 
+  facet_grid(year ~ ., switch = "y")
+p3
+```
+--> `switch =` arg in facet_grid() moves labels to the left
+
+```{r, fig.height=12}
+p2a <- p3 + 
+  theme(
+    plot.title = 
+      element_text(size = 16),
+    axis.text.x= 
+      element_text(size = 12),
+    axis.title.y=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y = element_blank(),
+    strip.background = element_blank(),
+    strip.text.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()) +
+  labs(x = "Age", y = NULL,
+       title = 
+         "Age Distribution of\nGSS Respondents")
+p2a
+```
+
+## `ggridges`
+```{r}
+# install.packages("ggridges")
+library(ggridges)
+```
+- Allows distributions to overlap vertically
+  - especially useful for repeated distributional measures that change in clear direction
+
+```{r}
+p <- ggplot(
+  data = gss_lon,
+  mapping = 
+    aes(x = age, 
+        y = factor(year, 
+                   levels = rev(unique(year)), 
+                   ordered = TRUE)))
+```
+--> `factor()` convets var to a factor var with set levels
+  - levels param allows to set categories of categorical var
+
+```{r, fig.height=12}
+
+p <- ggplot(
+  data = 
+    filter(gss_lon, year %in% yrs),
+  mapping = 
+    aes(x = age))
+
+p2b <- p + 
+  geom_density_ridges(
+    alpha = 0.6, fill = "lightblue", 
+    scale = 1.5,
+    mapping = aes(y = factor(year, levels = rev(unique(year)), ordered = TRUE))) +  
+    scale_x_continuous(
+      breaks = c(25, 50, 75)) +
+    scale_y_discrete(
+      expand = c(0.01, 0)) + 
+    labs(x = "Age", y = NULL, 
+         title = 
+           "Age Distribution of\nGSS Respondents") +
+    theme_ridges() +  # make labels aligned properly
+    theme(
+      title = 
+        element_text(
+          size = 16, face = "bold"))
+p2b
+```
+--> `expand` arg in scale_y_discrete() asjusts scalling of y-axis slightly
+
+
+## Arrange plots with `drigExtra::grid.arrange()`
+```{r, fig.height=12}
+library(gridExtra)
+grid.arrange(p2a, p2b, nrow = 1)   # sub-figures
+```
+--> essentially takes multiple figures and arranges them in a table
+
+## Advanced Bar Charts
+- Using df `studebt` to show distribution of debt pct and how it varies by type
+
+```{r}
+studebt <- socviz::studebt
+
+p_xlab <- "Amount Owed, in thousands of Dollars"
+p_title <- "Outstanding Student Loans"
+p_subtitle <- "44 million borrowers owe a total of $1.3 trillion"
+p_caption <- "Source: FRB NY"
+
+f_labs <- c(`Borrowers` = "Percent of\nall Borrowers",
+            `Balances` = "Percent of\nall Balances")
+```
+
+```{r}
+p <- ggplot(
+  data = studebt,
+  mapping = 
+    aes(x = pct/100, y = Debt,
+        fill = type))
+p1 <- p + geom_col()
+p1
+```
+
+```{r}
+p2 <- p1 +
+  scale_fill_brewer(
+    type = "qual", palette = "Dark2")
+p2
+```
+
+```{r}
+p3 <- p2 +
+  scale_x_continuous(
+    labels = scales::percent)
+p3
+```
+
+```{r}
+p4 <- p3 +
+  guides(fill = FALSE)
+p4
+```
+--> removing legend with `guides(fill = FALSE)`
+
+```{r}
+p5 <- p4 +
+  facet_grid(
+    .~ type, 
+    labeller = as_labeller(f_labs))
+p5
+```
+--> faceting here using custom labels as defined in f_labs at the beginning of this section
+
+```{r}
+p6 <- p5 +
+  labs(y = NULL, x = p_xlab, 
+       caption = p_caption,
+       title = p_title,
+       subtitle = p_subtitle)
+p6
+```
+
+```{r}
+p7 <- p6 +
+  theme(strip.text.x = 
+          element_text(face = "bold"))
+p7
+```
+
+## Advanced Bar Chart 2
+- Instead of having separate bars distinguished by height, - can use 100% stacked bars (proportions of bar)
+- Can then facet and lay bars on sides for comparison
+
+```{r}
+p <- ggplot(
+  studebt, 
+  aes(x = pct/100, y = type, 
+      fill = Debtrc))
+p1 <- p + 
+  geom_col(color = "gray80")+
+  theme(legend.position = 'top')
+p1
+
+```
+
+```{r}
+p2 <- p1 +
+  scale_y_discrete(
+    labels = as_labeller(f_labs))
+p2
+```
+
+```{r}
+p3 <- p2 +
+  scale_x_continuous(
+    labels = scales::percent)
+p3
+```
+
+```{r}
+p4 <- p3 +
+  scale_fill_viridis_d(
+    option = "B")
+p4
+```
+
+```{r}
+p5 <- p4 +
+  guides(
+    fill = 
+      guide_legend(
+        reverse = TRUE,
+        title.position = "top",
+        label.position = "bottom",
+        keywidth = 3,
+        nrow = 1))
+p5
+```
+
+```{r}
+p6 <- p5 +
+  labs(x = NULL, y = NULL,
+       fill = "Amount Owed, in thousands of dollars",
+       caption = p_caption,
+       title = p_title,
+       subtitle = p_subtitle)
+p6
+```
+
+```{r}
+p7 <- p6 +
+  theme(legend.position = "top",
+        axis.text.y = 
+          element_text(
+            face = "bold",
+            hjust = 1, 
+            size = 12),
+        axis.ticks.length = 
+          unit(0, "cm"),
+        panel.grid.major.y = 
+          element_blank())
+p7
+```
+

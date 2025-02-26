@@ -1,0 +1,245 @@
+---
+title: "DANL 310 | Adding Labels and Making Notes"
+editor: visual
+toc: True
+---
+```{r}
+library(tidyverse)
+by_country <- socviz::organdata |> 
+  group_by(consent_law, country) |>
+  summarize(donors_mean= mean(donors, na.rm = TRUE),
+            donors_sd = sd(donors, na.rm = TRUE),
+            gdp_mean = mean(gdp, na.rm = TRUE),
+            health_mean = mean(health, na.rm = TRUE),
+            roads_mean = mean(roads, na.rm = TRUE),
+            cerebvas_mean = mean(cerebvas, na.rm = TRUE))
+```
+
+# Plotting text directly
+```{r}
+p <- ggplot(data = by_country,
+            mapping = 
+              aes(x = roads_mean, 
+                  y = donors_mean))
+p + geom_point() + 
+  geom_text(mapping = 
+              aes(label = country),
+            hjust = 1.25,  # hjust = 0 is right, 1 = left
+            vjust = -.25) # Neg is above
+
+# By default text is plotted right on top of points
+```
+
+# Using ggrepel::geom_text_repel() instead
+```{r, fig.width=12, fig.height=12}
+library(ggrepel)
+library(socviz)
+
+p <- ggplot(elections_historic, aes(x = popular_pct, y = ec_pct,
+                                    label = winner_label))
+
+p <- p + 
+    geom_hline(yintercept = 0.5, 
+               linewidth = 1.4, 
+               color = "gray80") +
+    geom_vline(xintercept = 0.5, 
+               linewidth = 1.4, 
+               color = "gray80") +
+    geom_point() +
+    geom_text_repel()
+
+
+p <- p + 
+     scale_x_continuous(
+       labels = scales::percent) +
+     scale_y_continuous(
+       labels = scales::percent) 
+
+
+p_title <- "Presidential Elections: Popular & Electoral College Margins"
+p_subtitle <- "1824-2016"
+p_caption <- "Data for 2016 are provisional."
+x_label <- "Winner's share of Popular Vote"
+y_label <- "Winner's share of Electoral College Votes"
+
+p + labs(x = x_label, 
+         y = y_label, 
+         title = p_title, 
+         subtitle = p_subtitle,
+         caption = p_caption)
+```
+
+# Labeling Outliers
+```{r}
+# May not want to label all points, but only a particular set
+p <- ggplot(data = by_country,
+            mapping = 
+              aes(x = gdp_mean, 
+                  y = health_mean))
+
+p + geom_point() +
+    geom_text_repel(
+      data = filter(by_country, 
+                    gdp_mean > 25000),
+      mapping = 
+        aes(label = country)) # Simply use new df with filter
+# Here only countries with mean gdp larger than 25000 are labeled with the country's name
+```
+
+```{r, fig.width=9, fig.height=9}
+# creating a dummy variable for labels
+organdata <- organdata |> 
+  mutate(ind = ccode %in% 
+                  c("Ita", "Spa") & 
+               year > 1998)  
+
+p <- ggplot(data = organdata,
+            mapping = 
+              aes(x = roads, 
+                  y = donors, 
+                  color = ind))
+p + 
+  geom_point() +
+  geom_text_repel(
+    data = filter(organdata, ind),
+    mapping = aes(label = ccode)) +
+  guides(label = "none", 
+         color = "none")
+```
+
+# Write and Draw in Plot Area with annotate(geom = 'text')
+## Adding text
+```{r, fig.width=9, fig.height=9}
+organdata <-socviz::organdata
+p <- ggplot(data = organdata, 
+            mapping = 
+              aes(x = roads, 
+                  y = donors))
+p + geom_point() + 
+  annotate(geom = "text", 
+           x = 91, y = 33,# Sepcify using x and y scales in particular plot
+           label = "A surprisingly high \n recovery rate.", # \n is a line break
+           hjust = 0) # Right alignment
+```
+## Adding shape (rectangle)
+```{r, fig.width=9, fig.height=9}
+p <- ggplot(data = organdata,
+            mapping = aes(x = roads, y = donors))
+p + geom_point() +
+    annotate(geom = "rect", 
+             xmin = 125, xmax = 155,
+             ymin = 30, ymax = 35, 
+             fill = "red", 
+             alpha = 0.2) + 
+    annotate(geom = "text", 
+             x = 157, y = 33,
+             label = "A surprisingly high \n recovery rate.", 
+             hjust = 0)
+```
+
+## Adding highlighting behind points
+```{r,fig.width=9, fig.height=9}
+p <- ggplot(mpg, aes(displ, hwy)) +
+  geom_point(
+    data = 
+      filter(mpg, 
+             manufacturer == "subaru"), 
+    color = "orange", 
+    size = 3) +
+  geom_point() 
+p + 
+  annotate(geom = "point", 
+           x = 5.5, y = 40, 
+           colour = "orange", # Adds larger orange point
+           size = 3) + 
+  annotate(geom = "point", 
+           x = 5.5, y = 40) +  # Adds smaller black point to same loc.
+  annotate(geom = "text", 
+           x = 5.6, y = 40, 
+           label = "subaru", 
+           hjust = 0)
+```
+
+## Adding arrow to point
+```{r,fig.width=9, fig.height=9}
+p + 
+  annotate(
+    geom = "curve", 
+    x = 4, y = 35, 
+    xend = 2.65, yend = 27, 
+    curvature = 0.2, 
+    arrow = 
+      arrow(length = unit(2, "mm")) # Puts arrow on end of curved line
+  ) +
+  annotate(geom = "text", 
+           x = 4.1, y = 35, 
+           label = "subaru", 
+           hjust = "left")
+```
+
+# Classwork 5
+## Q3
+```{r}
+mtcars <- datasets::mtcars
+mtcars <- mtcars %>%   # A native pipe (|>) does not work here.
+  mutate(car = rownames(.))
+rownames(mtcars) <- 1:nrow(mtcars)
+DT::datatable(mtcars)
+```
+```{r}
+ggplot(data = mtcars, mapping = 
+         aes(x = wt, y = mpg))+
+  geom_point(color = 'red')+
+  geom_text_repel(data = filter(mtcars, wt > 5), mapping = aes(label = car))
+```
+
+# Classwork 6
+
+
+## Q1
+
+### Q1a and Q1b
+```{r, fig.height=12, fig.width=20}
+gm <- gapminder::gapminder
+
+gm <- gm %>% 
+  filter((year == 2007) & (continent != 'Oceania') ) %>% 
+  mutate(country = fct_reorder(country, lifeExp))
+
+p <- ggplot(data = gm, mapping = 
+         aes(y = country,
+             x = lifeExp))
+p +  geom_point(color = '#0072B2', size = 4, shape = 20)+
+  facet_wrap(~continent, scales = 'free_y')+
+  geom_text(aes(label = lifeExp), hjust = -.25)+
+  labs(x = '', y = '', title = 'Life expectancy in 2007')+
+  theme_minimal() + # Things are cut off, not a good plot
+  annotate(geom = 'text',x = 50, y = 'Swaziland',label = 'Lowest Life Expectancy Overall',hjust =0)
+```
+
+## Q2
+### Q2a
+```{r, fig.height=10, fig.width=6}
+el <- read_csv(
+  'https://bcdanl.github.io/data/electricity-usa-chn.csv')
+ggplot(el, aes(x = year, y = value, color = energy))+
+  geom_line()+
+  facet_wrap(~iso3c)+
+  scale_color_viridis_d(option = 'B')+
+  theme(legend.position = 'top') # Unsure of rest
+```
+
+### Q2b
+```{r}
+el_b <- el %>% 
+  group_by(iso3c, year) %>% 
+  mutate(tot = sum(value),
+         pct_val = value/tot)
+
+ggplot(el_b, aes(x = year, y = pct_val, color = energy))+
+  geom_line()+
+  facet_wrap(~iso3c)+
+  scale_color_viridis_d(option = 'B')+
+  theme(legend.position = 'top')
+```
+
