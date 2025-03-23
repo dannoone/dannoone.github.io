@@ -1,8 +1,9 @@
 ---
 title: "DANL 310 | Adding Labels and Making Notes"
-editor: visual
 toc: True
+date: '2025-02-15'
 ---
+
 ```{r}
 library(tidyverse)
 by_country <- socviz::organdata |> 
@@ -16,6 +17,7 @@ by_country <- socviz::organdata |>
 ```
 
 # Plotting text directly
+
 ```{r}
 p <- ggplot(data = by_country,
             mapping = 
@@ -31,6 +33,7 @@ p + geom_point() +
 ```
 
 # Using ggrepel::geom_text_repel() instead
+
 ```{r, fig.width=12, fig.height=12}
 library(ggrepel)
 library(socviz)
@@ -70,6 +73,7 @@ p + labs(x = x_label,
 ```
 
 # Labeling Outliers
+
 ```{r}
 # May not want to label all points, but only a particular set
 p <- ggplot(data = by_country,
@@ -108,7 +112,9 @@ p +
 ```
 
 # Write and Draw in Plot Area with annotate(geom = 'text')
+
 ## Adding text
+
 ```{r, fig.width=9, fig.height=9}
 organdata <-socviz::organdata
 p <- ggplot(data = organdata, 
@@ -121,7 +127,9 @@ p + geom_point() +
            label = "A surprisingly high \n recovery rate.", # \n is a line break
            hjust = 0) # Right alignment
 ```
+
 ## Adding shape (rectangle)
+
 ```{r, fig.width=9, fig.height=9}
 p <- ggplot(data = organdata,
             mapping = aes(x = roads, y = donors))
@@ -138,6 +146,7 @@ p + geom_point() +
 ```
 
 ## Adding highlighting behind points
+
 ```{r,fig.width=9, fig.height=9}
 p <- ggplot(mpg, aes(displ, hwy)) +
   geom_point(
@@ -161,6 +170,7 @@ p +
 ```
 
 ## Adding arrow to point
+
 ```{r,fig.width=9, fig.height=9}
 p + 
   annotate(
@@ -178,7 +188,9 @@ p +
 ```
 
 # Classwork 5
+
 ## Q3
+
 ```{r}
 mtcars <- datasets::mtcars
 mtcars <- mtcars %>%   # A native pipe (|>) does not work here.
@@ -186,6 +198,7 @@ mtcars <- mtcars %>%   # A native pipe (|>) does not work here.
 rownames(mtcars) <- 1:nrow(mtcars)
 DT::datatable(mtcars)
 ```
+
 ```{r}
 ggplot(data = mtcars, mapping = 
          aes(x = wt, y = mpg))+
@@ -195,10 +208,10 @@ ggplot(data = mtcars, mapping =
 
 # Classwork 6
 
-
 ## Q1
 
 ### Q1a and Q1b
+
 ```{r, fig.height=12, fig.width=20}
 gm <- gapminder::gapminder
 
@@ -218,7 +231,9 @@ p +  geom_point(color = '#0072B2', size = 4, shape = 20)+
 ```
 
 ## Q2
+
 ### Q2a
+
 ```{r, fig.height=10, fig.width=6}
 el <- read_csv(
   'https://bcdanl.github.io/data/electricity-usa-chn.csv')
@@ -230,6 +245,7 @@ ggplot(el, aes(x = year, y = value, color = energy))+
 ```
 
 ### Q2b
+
 ```{r}
 el_b <- el %>% 
   group_by(iso3c, year) %>% 
@@ -242,4 +258,3 @@ ggplot(el_b, aes(x = year, y = pct_val, color = energy))+
   scale_color_viridis_d(option = 'B')+
   theme(legend.position = 'top')
 ```
-

@@ -1,6 +1,7 @@
 ---
 title: "DANL 310 | Refining Plots"
 toc: True
+date: '2025-02-15'
 ---
 
 # Using color to your advantage:
