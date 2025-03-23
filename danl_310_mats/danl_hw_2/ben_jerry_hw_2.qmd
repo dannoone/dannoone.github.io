@@ -4,7 +4,7 @@ subtitle: "A descriptive and visual analysis of a Ben & Jerry's data set"
 author: "Daniel Noone"
 date: '2025-03-23'
 categories: ['Homework', 'ggplot']
-image: ben.jpeg
+image: ben.jpg
 output-file: html_document
 execute: 
   warning: false
