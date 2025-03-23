@@ -1,0 +1,71 @@
+---
+title: "Ben & Jerry's | Hw 2 Post"
+subtitle: "A descriptive and visual analysis of a Ben & Jerry's data set"
+author: "Daniel Noone"
+date: '2025-03-23'
+categories: ['Homework', 'ggplot']
+image: ben.jpeg
+output-file: html_document
+execute: 
+  warning: false
+  message: false
+  
+toc: true
+---
+
+# Loading Data
+```{r}
+library(tidyverse)
+library(skimr)
+ice_cream <- read_csv('https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv')
+skim(ice_cream)
+```
+
+# Data Analysis
+
+```{r}
+library(RColorBrewer)
+library(ggtext)
+library(ggrepel)
+library(hrbrthemes)
+library(ggthemes)
+```
+```{r}
+viz1 <- ice_cream %>% 
+  group_by(region, married, race) %>% 
+  summarize(hh_inc = mean(household_income)) %>% 
+  mutate(region = fct_reorder(region, hh_inc),
+         race = fct_reorder(race, hh_inc),
+         married = ifelse(married == F, 'Not Married', 'Married'),
+         hh_inc = hh_inc / 1000)
+
+ggplot(viz1, mapping =
+         aes(y = region, x = hh_inc, fill = race))+
+  geom_bar(stat = 'identity', position = position_dodge(width = 0.7), width = 0.6)+
+  theme_ipsum(base_family = 'sans')+
+  facet_wrap(~married)+
+  labs(x = 'Mean Household Income (1000s of dollars)', y = 'Region', title = 'Mean Household Income', subtitle = 'Bar chart depicts mean household income by race and marriage status')+
+  scale_fill_brewer(palette = 'Dark2')+
+  theme(plot.title = element_text(color = 'darkblue', face = 'bold'),
+        plot.subtitle = element_text(face = 'bold'),
+        plot.background = element_rect(fill = 'lightblue'))
+```
+
+```{r, fig.width=10}
+viz2 <- ice_cream %>%
+  filter(couponper1 > 0)
+
+ggplot(viz2, mapping =
+         aes(x = priceper1, y = couponper1))+
+  geom_point()+
+  geom_smooth(color = 'red', se = F)+
+  facet_wrap(~region)+
+  theme_ipsum(base_family = 'sans')+
+  labs(x = 'Price per Unit (USD)', y = 'Coupon Discount Amount (%)', title = 'Unit Price vs. Discount Amount per Region', subtitle = 'Faceted scatterplot depicts the relationship between per unit price and coupon discount amount, by region.')+
+  scale_fill_brewer(palette = 'Dark2')+
+  theme(plot.title = element_text(color = 'darkblue', face = 'bold'),
+        plot.subtitle = element_text(face = 'bold'),
+        plot.background = element_rect(fill = 'lightblue'))
+  
+```
+
