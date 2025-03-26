@@ -1,7 +1,9 @@
 ---
 title: "DANL 310 | Adding Labels and Making Notes"
 toc: True
+author: 'Daniel Noone'
 date: '2025-02-15'
+categories: ['Notes', 'ggplot']
 ---
 
 ```{r}

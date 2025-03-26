@@ -1,7 +1,9 @@
 ---
 title: "DANL 310 | Refining Plots"
+author: 'Daniel Noone'
 toc: True
 date: '2025-02-15'
+categories: ['Notes', 'ggplot']
 ---
 
 # Using color to your advantage:
