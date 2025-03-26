@@ -1,0 +1,128 @@
+---
+title: "DANL 310 | Geospatial Visualizations"
+toc: True
+author: 'Daniel Noone'
+date: '2025-03-26'
+categories: ['Notes', 'ggplot']
+---
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(socviz)
+library(geofacet)
+library(RColorBrewer)
+library(maps)
+```
+# Notes
+
+## Draw Maps (U.S. state-level data)
+```{r}
+us_states <- map_data("state") # from the 'maps' package
+p <- ggplot(data = us_states,
+            mapping = aes(x = long, y = lat,
+                          group = group)) # wont show right w/o group = group
+
+p + geom_polygon(fill = "white", color = "black")
+```
+
+# Classwork 8
+
+## Part 1
+```{r}
+climate_opinion_long <- read_csv(
+  'https://bcdanl.github.io/data/climate_opinion_2021.csv')
+```
+### Q1
+```{r}
+copl <- climate_opinion_long %>% 
+  filter(belief == 'human')
+```
+
+### Q2
+```{r}
+cm <- socviz::county_map
+
+cm$id = as.integer(cm$id)
+copl$id = as.integer(copl$id)
+
+cm_copl <- left_join(cm, copl) # couldn't join b/c dtype mismatch
+```
+
+### Q3
+```{r}
+
+brk = as.vector(
+  round(
+    c(min(cm_copl$perc, na.rm = T),
+      quantile(cm_copl$perc, .25, na.rm = T),
+      median(cm_copl$perc, na.rm = T),
+      quantile(cm_copl$perc, .75, na.rm = T),
+      max(cm_copl$perc, na.rm = T)
+      )
+    , 2
+    )
+  )
+
+lab = c(
+  paste0(brk[1], '\n (min)'),
+  paste0(brk[2], '\n (25th)'),
+  paste0(brk[3], '\n (50th)'),
+  paste0(brk[4], '\n (75th)'),
+  paste0(brk[5], '\n (max)')
+)
+
+
+ggplot(data = cm_copl, mapping = 
+         aes(x = long, y = lat, fill = perc, group = group))+
+  geom_polygon()+
+    theme_map()+
+  scale_fill_gradient2(low = '#2E74C0',
+                       mid = 'white',
+                       high = '#CB454A',
+                       midpoint = median(cm_copl$perc, na.rm = T),
+                       breaks = brk,
+                       label = lab)+
+  guides(fill = guide_colorbar(barwidth = 30))+
+  theme(legend.position = 'bottom',
+        legend.justification = 'center',
+        legend.title = element_text(margin = margin(b = 18, r = 5)))+
+  labs(fill = 'Percent\nBelief', title = 'U.S. Climate Opinion 2021')
+
+```
+
+## Part 2
+```{r}
+unemp_house_prices <- read_csv(
+  'https://bcdanl.github.io/data/unemp_house_prices.csv')
+```
+```{r}
+library(lubridate)
+
+p2 <- unemp_house_prices %>% 
+  filter(year(date) >= 2008) %>% 
+  mutate(up = unemploy_perc / 100)
+
+adjust_labels <- as_labeller(
+  function(x) {
+    case_when(
+      x == "New Hampshire" ~ "N. Hampshire",
+      x == "District of Columbia" ~ "DC",
+      TRUE ~ x
+    )
+  }
+)
+
+ggplot(data = p2, aes(x = date, y = up))+
+  geom_area(fill = 'lightblue', color = 'black', alpha = 0.5)+
+  facet_geo(~state, labeller = adjust_labels)+
+  theme_minimal()+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_date(
+    breaks = c(ymd("2009-01-01"), ymd("2011-01-01"),ymd("2013-01-01"),ymd("2015-01-01"),ymd("2017-01-01")),
+    labels = c("'09", "'11", "'13", "'15", "'17")
+  )+
+  labs(x = '', y = 'Unemployment Rate')
+```
+
