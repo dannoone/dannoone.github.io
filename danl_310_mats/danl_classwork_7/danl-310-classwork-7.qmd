@@ -1,0 +1,164 @@
+---
+title: "DANL 310 | Classwork 7"
+toc: True
+author: 'Daniel Noone'
+date: '2025-04-02'
+categories: ['Classwork', 'ggplot']
+---
+```{r}
+library(tidyverse)
+library(skimr)
+library(hrbrthemes)
+library(ggthemes)
+```
+
+# Q4
+```{r}
+holiday_movies <- read_csv("https://bcdanl.github.io/data/holiday_movies.csv")
+holiday_movie_genres <- read_csv("https://bcdanl.github.io/data/holiday_movie_genres.csv")
+```
+
+## Q4a
+```{r}
+hmwg <- left_join(holiday_movies, holiday_movie_genres, by = 'tconst')
+```
+
+## Q4b
+```{r}
+hmwg_popg <- hmwg %>% 
+  group_by(genres) %>% 
+  summarize(n = n()) %>% 
+  arrange(desc(n)) %>% 
+  head(5)
+
+hmwg_popg <- hmwg %>% 
+  filter(genres %in% hmwg_popg$genres & title_type != 'video')
+
+
+hmwg_popg %>% 
+  select(average_rating, num_votes, genres, title_type) %>% 
+  skim()
+```
+
+## Q4c
+```{r}
+ggplot(hmwg_popg, mapping = 
+         aes(x = log10(num_votes), y = average_rating))+
+  geom_point()+ 
+  geom_smooth(aes(color = genres),method = lm)+
+  facet_grid(title_type ~ genres, scales = 'free_y')
+
+
+```
+
+## Q4e
+```{r}
+library(RColorBrewer)
+
+hmwg_q4e <- hmwg %>% 
+  mutate(genres = ifelse(genres %in% hmwg_popg$genres, genres, 'Other')) %>% 
+  filter(year >= 1975, year <= 2022) %>% 
+  count(year, genres)
+
+ggplot(hmwg_q4e, mapping = 
+         aes(x = year, y = n, fill = fct_reorder2(genres, year, n), color = fct_reorder2(genres, year, n)))+
+  geom_col(position = 'fill') +
+  scale_fill_brewer(palette = 'Set2') +
+  scale_y_percent()+
+  guides(fill = guide_legend(keyheight = 2.25, keywidth = 2.25), color = F)+
+  labs(x = '', y = 'Share of number of movies by genre', fill = 'Genre', title = 'How Have Christmas Movie Genres Evolved Over Time?', color = '')
+```
+
+```{r}
+hmwg_q4e2 <- hmwg_q4e %>% 
+  group_by(year) %>% 
+  mutate(pct = n / sum(n))
+
+ggplot(hmwg_q4e2, mapping = 
+         aes(x = year, y = pct, fill = fct_reorder2(genres, year, n), color = fct_reorder2(genres, year, n)))+
+  geom_area(position = 'fill') +
+  scale_fill_brewer(palette = 'Set2') +
+  scale_y_percent()+
+  guides(fill = guide_legend(keyheight = 2.25, keywidth = 2.25), color = F)+
+  labs(x = '', y = 'Share of number of movies by genre', fill = 'Genre', title = 'How Have Christmas Movie Genres Evolved Over Time?', color = '')
+```
+
+## Q4g
+```{r}
+hmwg <- hmwg %>% 
+  mutate(christmas = str_detect(simple_title, "christmas") | str_detect(simple_title, "xmas") | str_detect(simple_title, "x mas"),
+         holiday = str_detect(simple_title, "holiday"))
+         
+```
+
+## Q4h
+```{r}
+hmwg_q4h <- hmwg %>% 
+  count(year, christmas, holiday)
+
+ggplot(hmwg_q4h, mapping = 
+         aes(x = year, y = n, color = holiday)) +
+  geom_point()+
+  geom_smooth() +
+  facet_wrap(~christmas, scale = 'free')+
+  scale_color_manual(values = c('steelblue', 'darkorange'))+
+  theme_ipsum()+
+  theme(strip.background = element_rect(fill = 'gray'))
+```
+
+## Q4i
+```{r}
+hmwg_q4i <- hmwg %>% 
+  filter(genres %in% hmwg_popg$genres & christmas == TRUE) %>% 
+  group_by(genres) %>% 
+  summarise(mean = mean(num_votes)) %>% 
+  mutate(genres = fct_reorder(genres, mean))
+
+ggplot(data = hmwg_q4i, mapping = 
+         aes(x = mean, y = genres)) +
+  geom_point(size = 2)+
+  labs(x = 'mean_votes')+
+  theme_ipsum()
+```
+
+
+
+# Q5
+```{r}
+tripadvisor <- read_csv("https://bcdanl.github.io/data/tripadvisor_cleaned.csv")
+```
+
+## Q5a
+```{r}
+
+ta <- tripadvisor %>% 
+  mutate(time = factor(time, levels = c('PRE', 'POST')))
+```
+
+## Q5b
+```{r}
+ggplot(ta, mapping = 
+         aes(x = time, y = days_visited, fill = time))+
+  geom_boxplot()+
+  facet_grid(easier_signup~became_member)+
+  scale_fill_manual(values = c('steelblue', 'darkorange'))+
+  theme_minimal()+
+  theme(strip.background = element_rect(fill = 'gray'))
+```
+
+## Q5d
+```{r}
+q5a <- pivot_wider(ta, names_from = time, 
+                   values_from = days_visited) %>% 
+  mutate(diff = POST - PRE) %>% 
+  select(id, diff, PRE, POST, easier_signup, became_member)
+  
+```
+
+## Q5e
+```{r}
+q5e <- q5a %>% 
+  group_by(easier_signup, became_member) %>% 
+  summarise(mean_diff = round(mean(diff),2))
+```
+

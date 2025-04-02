@@ -217,18 +217,11 @@
     "text": "Apply the applicable geoms and theme or labs modifications\n\nGeoms in ggplot2 allow for one to choose which plotting methods are performed and calibrate certain parameters.\n\n\np + geom_point(aes(color = cyl_chr), size = 2, shape = 16)+\n  labs(x = 'Miles per Gallon', y = 'Horsepower', color = 'Cylinders', title = 'Miles Per Gallon vs. Horsepower')+\n  theme_bw()+\n  theme(legend.position = c(0.95, 0.9))+\n  scale_color_manual(values = c('red',  'blue'))\n\n\n\n\n\n\n\n\n\np2 + geom_bar(aes(fill = sport), position = 'dodge', stat = 'identity')+\n  guides(fill = F)+\n  theme_bw()+\n  labs(x = 'Sport', y = 'Mean Body Fat', title = 'Mean Body Fat vs. Sport')"
   },
   {
-    "objectID": "class_projects.html",
-    "href": "class_projects.html",
-    "title": "Class Projects",
+    "objectID": "danl_310.html",
+    "href": "danl_310.html",
+    "title": "DANL 310",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "class_blog.html",
-    "href": "class_blog.html",
-    "title": "Class Blog Posts",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWelcome All!\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nDaniel Noone\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDANL 310 | Classwork 7\n\n\n\n\n\n\n\n\nApr 2, 2025\n\n\nDaniel Noone\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | Geospatial Visualizations\n\n\n\n\n\n\n\n\nMar 26, 2025\n\n\nDaniel Noone\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nBen & Jerry’s | Hw 2 Post\n\n\nA descriptive and visual analysis of a Ben & Jerry’s data set\n\n\n\n\n\nMar 23, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | Refining Plots\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nDaniel Noone\n\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | Adding Labels and Making Notes\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nDaniel Noone\n\n\n9 min\n\n\n\n\n\n\n\n\n\n\n\n\nggplot Basics | Hw 1 Post\n\n\nIn this post the basics of ggplot2 syntax with be discussed\n\n\n\n\n\nFeb 13, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL | Lec. Notes\n\n\n\n\n\n\n\n\nFeb 12, 2025\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "class_blog_posts/welcome/index.html",
@@ -238,11 +231,102 @@
     "text": "Welcome to my blog powered by Quarto and GitHub!!\n\nAs a Data Analytics major, it is helpful to hone my abilities by doing exploratory data analysis. With that, I will be posting little projects here and there on my website, feel free to take a look!"
   },
   {
-    "objectID": "danl_310.html",
-    "href": "danl_310.html",
-    "title": "DANL 310",
+    "objectID": "class_blog.html",
+    "href": "class_blog.html",
+    "title": "Class Blog Posts",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nDANL 310 | Geospatial Visualizations\n\n\n\n\n\n\n\n\nMar 26, 2025\n\n\nDaniel Noone\n\n\n3 min\n\n\n\n\n\n\n\n\n\n\n\n\nBen & Jerry’s | Hw 2 Post\n\n\nA descriptive and visual analysis of a Ben & Jerry’s data set\n\n\n\n\n\nMar 23, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | Refining Plots\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nDaniel Noone\n\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | Adding Labels and Making Notes\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nDaniel Noone\n\n\n9 min\n\n\n\n\n\n\n\n\n\n\n\n\nggplot Basics | Hw 1 Post\n\n\nIn this post the basics of ggplot2 syntax with be discussed\n\n\n\n\n\nFeb 13, 2025\n\n\nDaniel Noone\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL | Lec. Notes\n\n\n\n\n\n\n\n\nFeb 12, 2025\n\n\n2 min\n\n\n\n\n\n\n\n\n\n\n\n\nDANL 310 | ggplot2 basics notes\n\n\n\n\n\n\n\n\nFeb 9, 2025\n\n\nDaniel Noone\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWelcome All!\n\n\n\n\n\n\n\n\nDec 9, 2023\n\n\nDaniel Noone\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "class_projects.html",
+    "href": "class_projects.html",
+    "title": "Class Projects",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html",
+    "title": "DANL 310 | Classwork 7",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(skimr)\nlibrary(hrbrthemes)\nlibrary(ggthemes)"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4a",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4a",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4a",
+    "text": "Q4a\n\nhmwg &lt;- left_join(holiday_movies, holiday_movie_genres, by = 'tconst')"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4b",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4b",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4b",
+    "text": "Q4b\n\nhmwg_popg &lt;- hmwg %&gt;% \n  group_by(genres) %&gt;% \n  summarize(n = n()) %&gt;% \n  arrange(desc(n)) %&gt;% \n  head(5)\n\nhmwg_popg &lt;- hmwg %&gt;% \n  filter(genres %in% hmwg_popg$genres & title_type != 'video')\n\n\nhmwg_popg %&gt;% \n  select(average_rating, num_votes, genres, title_type) %&gt;% \n  skim()\n\n\nData summary\n\n\nName\nPiped data\n\n\nNumber of rows\n3261\n\n\nNumber of columns\n4\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n2\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\ngenres\n0\n1\n5\n9\n0\n5\n0\n\n\ntitle_type\n0\n1\n5\n7\n0\n2\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\naverage_rating\n0\n1\n6.02\n1.05\n1.3\n5.5\n6.1\n6.6\n9.9\n▁▁▇▅▁\n\n\nnum_votes\n0\n1\n2821.76\n16950.36\n10.0\n148.0\n602.0\n1390.0\n367288.0\n▇▁▁▁▁"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4c",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4c",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4c",
+    "text": "Q4c\n\nggplot(hmwg_popg, mapping = \n         aes(x = log10(num_votes), y = average_rating))+\n  geom_point()+ \n  geom_smooth(aes(color = genres),method = lm)+\n  facet_grid(title_type ~ genres, scales = 'free_y')\n\n`geom_smooth()` using formula = 'y ~ x'"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4e",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4e",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4e",
+    "text": "Q4e\n\nlibrary(RColorBrewer)\n\nhmwg_q4e &lt;- hmwg %&gt;% \n  mutate(genres = ifelse(genres %in% hmwg_popg$genres, genres, 'Other')) %&gt;% \n  filter(year &gt;= 1975, year &lt;= 2022) %&gt;% \n  count(year, genres)\n\nggplot(hmwg_q4e, mapping = \n         aes(x = year, y = n, fill = fct_reorder2(genres, year, n), color = fct_reorder2(genres, year, n)))+\n  geom_col(position = 'fill') +\n  scale_fill_brewer(palette = 'Set2') +\n  scale_y_percent()+\n  guides(fill = guide_legend(keyheight = 2.25, keywidth = 2.25), color = F)+\n  labs(x = '', y = 'Share of number of movies by genre', fill = 'Genre', title = 'How Have Christmas Movie Genres Evolved Over Time?', color = '')\n\nWarning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use \"none\" instead as\nof ggplot2 3.3.4.\n\n\n\n\n\n\n\n\n\n\nhmwg_q4e2 &lt;- hmwg_q4e %&gt;% \n  group_by(year) %&gt;% \n  mutate(pct = n / sum(n))\n\nggplot(hmwg_q4e2, mapping = \n         aes(x = year, y = pct, fill = fct_reorder2(genres, year, n), color = fct_reorder2(genres, year, n)))+\n  geom_area(position = 'fill') +\n  scale_fill_brewer(palette = 'Set2') +\n  scale_y_percent()+\n  guides(fill = guide_legend(keyheight = 2.25, keywidth = 2.25), color = F)+\n  labs(x = '', y = 'Share of number of movies by genre', fill = 'Genre', title = 'How Have Christmas Movie Genres Evolved Over Time?', color = '')"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4g",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4g",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4g",
+    "text": "Q4g\n\nhmwg &lt;- hmwg %&gt;% \n  mutate(christmas = str_detect(simple_title, \"christmas\") | str_detect(simple_title, \"xmas\") | str_detect(simple_title, \"x mas\"),\n         holiday = str_detect(simple_title, \"holiday\"))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4h",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4h",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4h",
+    "text": "Q4h\n\nhmwg_q4h &lt;- hmwg %&gt;% \n  count(year, christmas, holiday)\n\nggplot(hmwg_q4h, mapping = \n         aes(x = year, y = n, color = holiday)) +\n  geom_point()+\n  geom_smooth() +\n  facet_wrap(~christmas, scale = 'free')+\n  scale_color_manual(values = c('steelblue', 'darkorange'))+\n  theme_ipsum()+\n  theme(strip.background = element_rect(fill = 'gray'))\n\n`geom_smooth()` using method = 'loess' and formula = 'y ~ x'\n\n\nWarning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,\n: Chernobyl! trL&gt;n 6\nWarning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,\n: Chernobyl! trL&gt;n 6\n\n\nWarning in sqrt(sum.squares/one.delta): NaNs produced\n\n\nWarning in stats::qt(level/2 + 0.5, pred$df): NaNs produced\n\n\nWarning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning\n-Inf\n\n\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\nWarning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family\nnot found in Windows font database\n\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4i",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q4i",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q4i",
+    "text": "Q4i\n\nhmwg_q4i &lt;- hmwg %&gt;% \n  filter(genres %in% hmwg_popg$genres & christmas == TRUE) %&gt;% \n  group_by(genres) %&gt;% \n  summarise(mean = mean(num_votes)) %&gt;% \n  mutate(genres = fct_reorder(genres, mean))\n\nggplot(data = hmwg_q4i, mapping = \n         aes(x = mean, y = genres)) +\n  geom_point(size = 2)+\n  labs(x = 'mean_votes')+\n  theme_ipsum()\n\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\nWarning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font\nfamily not found in Windows font database\n\n\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database\nWarning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :\nfont family not found in Windows font database"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5a",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5a",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q5a",
+    "text": "Q5a\n\nta &lt;- tripadvisor %&gt;% \n  mutate(time = factor(time, levels = c('PRE', 'POST')))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5b",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5b",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q5b",
+    "text": "Q5b\n\nggplot(ta, mapping = \n         aes(x = time, y = days_visited, fill = time))+\n  geom_boxplot()+\n  facet_grid(easier_signup~became_member)+\n  scale_fill_manual(values = c('steelblue', 'darkorange'))+\n  theme_minimal()+\n  theme(strip.background = element_rect(fill = 'gray'))"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5d",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5d",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q5d",
+    "text": "Q5d\n\nq5a &lt;- pivot_wider(ta, names_from = time, \n                   values_from = days_visited) %&gt;% \n  mutate(diff = POST - PRE) %&gt;% \n  select(id, diff, PRE, POST, easier_signup, became_member)"
+  },
+  {
+    "objectID": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5e",
+    "href": "danl_310_mats/danl_classwork_7/danl-310-classwork-7.html#q5e",
+    "title": "DANL 310 | Classwork 7",
+    "section": "Q5e",
+    "text": "Q5e\n\nq5e &lt;- q5a %&gt;% \n  group_by(easier_signup, became_member) %&gt;% \n  summarise(mean_diff = round(mean(diff),2))\n\n`summarise()` has grouped output by 'easier_signup'. You can override using the\n`.groups` argument."
   },
   {
     "objectID": "danl_310_mats/danl_hw_2/html_document.html",

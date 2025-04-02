@@ -4,18 +4,9 @@
     "items": []
   },
   {
-    "listing": "/class_projects.html",
-    "items": []
-  },
-  {
-    "listing": "/class_blog.html",
-    "items": [
-      "/class_blog_posts/welcome/index.html"
-    ]
-  },
-  {
     "listing": "/danl_310.html",
     "items": [
+      "/danl_310_mats/danl_classwork_7/danl-310-classwork-7.html",
       "/danl_310_mats/danl_mapdata/danl_310_mapdata.html",
       "/danl_310_mats/danl_hw_2/html_document.html",
       "/danl_310_mats/danl_lec_refiningplots/danl_310_refiningplots.html",
@@ -24,6 +15,16 @@
       "/danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html",
       "/danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html"
     ]
+  },
+  {
+    "listing": "/class_blog.html",
+    "items": [
+      "/class_blog_posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/class_projects.html",
+    "items": []
   },
   {
     "listing": "/danl_320.html",
