@@ -4,6 +4,25 @@
     "items": []
   },
   {
+    "listing": "/danl_320.html",
+    "items": [
+      "/danl_320_mats/danl_pysparklinreg/danl_320_lec_linreg.html",
+      "/danl_320_mats/beer_hw3/danl_320_hw2_noone_daniel.html",
+      "/danl_320_mats/ben_jerry_post/danl_320_hw_2_post.html",
+      "/danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html"
+    ]
+  },
+  {
+    "listing": "/class_projects.html",
+    "items": []
+  },
+  {
+    "listing": "/class_blog.html",
+    "items": [
+      "/class_blog_posts/welcome/index.html"
+    ]
+  },
+  {
     "listing": "/danl_310.html",
     "items": [
       "/danl_310_mats/danl_classwork_7/danl-310-classwork-7.html",
@@ -14,24 +33,6 @@
       "/danl_310_mats/danl_hw_1/html_document.html",
       "/danl_310_mats/danl_lec_5_6/danl_310_lec_5_and_6.html",
       "/danl_310_mats/danl_lec_3_4/danl_310_lec_3_and_4.html"
-    ]
-  },
-  {
-    "listing": "/class_blog.html",
-    "items": [
-      "/class_blog_posts/welcome/index.html"
-    ]
-  },
-  {
-    "listing": "/class_projects.html",
-    "items": []
-  },
-  {
-    "listing": "/danl_320.html",
-    "items": [
-      "/danl_320_mats/danl_pysparklinreg/danl_320_lec_linreg.html",
-      "/danl_320_mats/ben_jerry_post/danl_320_hw_2_post.html",
-      "/danl_320_mats/pyspark_basics_post/pyspark_basics_hw_1.html"
     ]
   }
 ]
