@@ -1,0 +1,171 @@
+---
+title: "Evaluating Social Vulnerability in Livingston County, NY | DANL 310 Write-Up"
+author: "Charles Canero III & Daniel Noone"
+date: '05-08-2025'
+categories: ['Capstone', 'Project']
+toc: True
+
+format: html
+---
+# Data Loading and Pkgs
+```{r}
+library(tidyverse)
+library(plotly)
+library(sf)    
+library(tigris)
+library(ggtext)
+svi <-  read.csv("C:\\Users\\noone\\OneDrive\\Documents\\School\\SUNY Geneseo\\Classes\\Spring 2025\\DANL499\\SVI2022_NEWYORK_tract.csv")
+```
+
+# Introduction
+The purpose of this project is to provide an analysis of social vulnerability in New York State overall and specifically Livingston County, New York. Communities can experience adverse events without warning (e.g. pandemics, natural disasters, etc.), and certain social factors can impact a community’s ability to respond. The ability with which a community is able to respond is described as its social vulnerability (SV). In our project, SV was assessed by utilizing the Centers for Disease Control and Prevention/Agency for Toxic Substances and Disease Registry (CDC/ATSDR) Social Vulnerability Index (SVI) from 2022. The SVI takes these social factors and quantifies them into an aggregated measure that determines a community’s SV. The overall goal is to provide insights into how Livingston County performs in terms of the SVI, especially in comparison to overall NYS measures, with a greater emphasis on transportation as it applies to Livingston County’s more rural nature.
+```{r}
+svi <- svi %>%
+  mutate(RPL_THEMES = na_if(RPL_THEMES, -999))
+
+svi_shape <- svi %>%
+  st_as_sf(wkt = "geometry", crs = 4326)
+
+svi_county <- svi_shape %>%
+  group_by(COUNTY) %>%
+  summarize(
+    mean_svi = mean(RPL_THEMES, na.rm = TRUE),
+    geometry = st_union(geometry)
+  ) %>%
+  st_cast("MULTIPOLYGON") %>%
+  ungroup()
+
+
+p <- ggplot(svi_county) +
+  geom_sf(aes(fill = mean_svi,
+              text = paste0("County: ", COUNTY,
+                            "<br>Mean SVI: ", round(mean_svi, 2))),
+          color = "black") +
+  scale_fill_viridis_c(option = "plasma") +
+  labs(title = "Mean Composite SVI Scores by NY County") +
+  theme_void()+
+  theme(plot.background = element_rect(color = 'grey50'))
+
+ggplotly(p, tooltip = "text")
+```
+
+
+# The CDC/ATSDR Social Vulnerability Index (SVI)
+The SVI, specifically data from the year 2022, measures SV by census tract and is broken up into four themes that are made up of individual measures. Theme 1 measures socioeconomic status which is made up of estimated persons below 150% poverty, unemployed, with housing cost burden, with no high school diploma, and with no health insurance. Theme 2 measures household characteristics, made up of estimates of those 65 and older, 17 and younger, civilians with disabilities, single parent households, and with limited English language proficiency.  Theme 3 measures racial and ethnic minority status and is made up of estimated measures of those with racial or ethnic minority status. Finally, theme 4 is made up of housing type and transportation which is usually made up of multi-unit structures, mobile homes, crowding, those with no vehicle, and those living in group quarters. Although theme 4 is made up of all five measures, it was decided for the Livingston County analysis, to just focus on transportation with the no vehicle measure and omit the rest of the variables representing housing type.
+Each variable that represents the overall theme along with the composite SVI measure is represented as a percentile value between 0 and 1, with higher values indicating greater SV. The individual measures that make up each of them are measured as estimated persons in each census tract.	
+
+
+# Overall New York State SVI Analysis
+Shown below in figure two is a choropleth map depicting the composite SVI ranking of each census tract in New York State. Higher values (greater SV) are represented by the color red, while lower values (lesser SV) are represented by the color blue. The black areas on the map indicate missing values for those census tracts. It can be seen in the figure that metro areas such as Rochester, Syracuse, Buffalo, Albany, and New York City have higher SVI rankings compared to the more rural areas. However, ultra rural tracts also seem to have high SVI rankings.
+<br>
+![SVI Map](nys_geoplot.png)
+
+
+# The Bronx: What Causes its Abnomrally High SVI Ranking?
+When SVI rankings were taken into consideration state-wide, it was seen that the Bronx is the most socially vulnerable. This was determined because the county held the highest SVI rankings for 3 out of 4 themes that make up composite SVI rankings. These scores were found by averaging the rankings over all census tracts in each county for each theme; these mean values for Bronx County were highest overall for themes 1-3 {T1 = 0.82 ; T2 = 0.83 ; T3 = 0.87}. In figures 2-5 below, a deeper analysis was performed in an attempt to figure out what may be causing this abnormally high social vulnerability ranking. All measures depicted are in terms of estimated population percentage.
+	In figure two, the individual measures that make up theme one (socioeconomic status) are compared between the worst performing county (Bronx), NYS averages, and the best performing county (Saratoga). It can be seen that for all measures making up socioeconomic status, the Bronx has higher estimated population percentages than NYS overall and Saratoga county. In figure three, the individual measures that make up theme two (household characteristics) are compared in the same way, although the best performing county here is Tompkins County. Similar results are seen with theme two, as the Bronx has higher estimated population percentages for all measures except for age 65 and up. Finally, figures four and five both represent individual measures that make up theme three (racial and ethnic minority status). Figure four depicts overall theme 3 measures, and figure five depicts estimated population percentages for individual racial and ethnic minority status categories. It can be seen in figure five that the Bronx is estimated to have ~82% of its population made up of Hispanic and African American persons, which explains the large estimated population percentage of the persons with minority status variable in figure four when compared to the values associated with overall NYS and the best performing county (Lewis).
+	There are a few possible reasons for this disparity in terms of SVI ranking. Data from 2019-2023 shows that the poverty rate was 27.7% in the Bronx compared to 19.5% in NYC overall (U.S. Census Bureau, n.d.). This result is not surprising as it was determined in an analysis from 1990-2019 that Hispanic and African American persons in NYC were found to be more affected by poverty (Castillo, 2022). A potential reason for this disparity between groups in terms of the effects of poverty could be redlining, which is a discriminatory practice where financial assistance services are refused for individuals in certain neighborhoods. For example in the 1930s the Home Owners’ Loan Corporation (HOLC) was federally sponsored to create color-coded maps which outlined levels of “risk” for lending. Areas with more ethnic/racial minorities were often given grades of C:Definitely Declining or D:Hazardous (Krieger et al., 2020). With the Bronx having a very large proportion of its population estimated to be Hispanic or African American, it suggests that residents of the area were and still are affected by discriminatory practices such as redlining, which may be driving its increased social vulnerability.
+<br>
+![](theme_1_plot.png)
+![](theme_2_plot.png)
+![](theme_3_plot.png)
+![](race_plot.png)
+<br>
+
+# Zooming into Livingston County
+Livingston County, situated about 30 miles south of Rochester, NY, encompasses about 632 square miles of land and is home to a little under 62,000 people. When averaging overall SVI score per county in NY, we see that Livingston sits fairly well compared to the rest of the state.
+<br>
+![](density.png)
+
+As shown in figure 6, Livingston’s average overall census tract SVI percentile ranking is ~0.35, which is below the mean for NY. While this suggests that overall social vulnerability is relatively low,  it does not imply that all residents share the same level of resilience county-wide. In order to truly identify the most vulnerable areas, we will assess overall SVI by census tract, which can be viewed in the geospatial visualization below.
+<br>
+![](liv.png)
+
+The numbers located within each census tract represent its overall SVI percentile ranking.  Darker red shading denotes higher percentiles, therefore greater social vulnerability, whereas blue shades indicate lower risk. Though most of the county is of lower social vulnerability, this visualization highlights the few census tracts that are quite high. Towns within census tracts with an average overall SVI percentiles of .50 include: York, Springwater, and parts of Geneseo, Mount Morris, and North Dansville. To understand why vulnerability is concentrated in these locations, we break up the composite SVI into its four thematic components and construct a correlation matrix to examine the interrelationships among them.
+<br>
+![](corr.png)
+
+These matrices represent how correlated each variable is with one another, the number in each cell represents the correlation coefficient between its corresponding themes. The four themes include: Socioeconomic Status, Household Characteristics, Racial & Ethnic Minority Status, and Transportation. There is a slight modification to the 4th theme, Housing Type & Transportation, as it is now just Transportation, which is made up of the variable E_NOVEH (estimate of households without a vehicle available). Housing type indicators were excluded because they predominantly capture urban dynamics that are less relevant in Livingston County’s largely rural context. 
+As shown in the matrices, all themes are highly positively correlated with one another, indicating strong positive linear relationships. For example, under Livingston County, Transportation and Socioeconomic Status have a correlation coefficient of .73, indicating that people with higher socioeconomic issues tend to not have a household vehicle available. The only exception is the third theme within Livingston County, Racial and Ethnic Minority Status, which has very low correlation coefficients, suggesting very weak linear relationships. This is most likely due to the very small proportion of ethnic and minority populations in Livingston compared to the rest of NY. This can be viewed with figure 9.
+<br>
+![](race.png)
+
+**Total minority populations are as follows:**
+- Hispanic or Latino (of any race) 
+- Black and African American, Not Hispanic or Latino
+- American Indian and Alaska Native, Not Hispanic or Latino
+- Asian, Not Hispanic or Latino 
+- Native Hawaiian and Other Pacific Islander, Not Hispanic or Latino 
+- Two or More Races, Not Hispanic or Latino
+- Other Races, Not Hispanic or Latino
+
+Proportion of total minority populations in New York State, represented as the blue bar on the left side of the chart, is 46.18%, which is far greater than Livingston County, falling at 10.36%. This likely explains the very low correlation coefficients between Racial and Ethnic Minority Status and the rest of the themes for Livingston County. This does not mean that the effects of racial and ethnic minority status on social vulnerability are not present in Livingston County.  Since the proportion of data is so small, outlier observations have enormous leverage that can manipulate the correlation and mask the true nature of the relationship. To find how each variable individually impacts the overall SVI percentile, we use machine learning.
+
+
+
+# Lasso Regression Analysis
+To measure the effects of each variable within the four SVI themes on the overall SVI percentile, we employed the Lasso-regularized linear regression machine learning model. Regularized regression models such as Lasso are used to mitigate the effects of overfitting caused by multicollinearity. Overfit models will favor collinear variables producing unreliable results with little predictive power. Lasso resolves this issue by only retaining distinct variables, removing multicollinearity and capturing more of the data’s true variance. The predictors we use for our model are all variables that are encompassed within the four SVI themes, excluding Housing Type, so the 4th theme only consists of E_NOVEH. The outcome variable is overall SVI percentile ranking. To bolster our model, we use five cross validation (CV) folds to reduce the risk of overfitting, improve model selection, and maximize data usage. For each fold, the model will test 100 alphas to ensure we achieve the optimal regularization strength. In order to avoid bias to larger scaled variables, we standardized the predictors to neutralize scale effects. Here are the results from this model:
+
+Chosen Alpha: 0.012206366214050784
+Beta Coefficients:
+E_NOVEH      0.056282
+E_POV150     0.054675
+E_UNINSUR    0.047608
+E_AGE65     -0.017802
+E_SNGPNT    -0.007542
+E_NOHSDP     0.000000
+E_UNEMP     -0.000000
+E_HBURD      0.000000
+E_DISABL     0.000000
+E_AGE17     -0.000000
+E_LIMENG    -0.000000
+E_MINRTY    -0.000000
+R² on test set: 0.8627614548922112
+RMSE on test set: 0.06546040436425432
+CV MSE: 0.0134 ± 0.0084
+
+The results are promising, the model has successfully captured ~ 86.3% of the total variance with a small error of ~.065. The E_NOVEH variable has the largest beta coefficient, meaning that households without an available vehicle have the most significant impact on overall SVI percentile ranking, followed closely by E_POV150, the percentage of people below the 150% poverty threshold. To validate the integrity of these results we run the following evaluations: hold-out test-set evaluation, plot cross-validation error vs alpha, plot sparsity vs error, and finally, compare to a non-regularized linear model such as ordinary least squares regression. 
+
+
+# Model Validation
+To ensure our model has not been overfit due to multicollinearity, we compare the CV MSE (mean square error) to the test-set MSE, if the test-set MSE is greater than the range provided by the CV estimates, it suggests the model could be overfit. 
+
+CV MSE: 0.0134 ± 0.0084
+Test MSE : 0.0043
+
+The hold-out error lies slightly below the lower bound of the CV estimate’s one-standard deviation interval, indicating that the model generalizes well and therefore no evidence of overfitting is observed. To confirm the selected alpha is correct, we plot cross-validation error vs alpha. 
+<br>
+![](cv.png)
+
+Points closer to the origin on the x axis represent stronger regularization, and points  further from the origin represent weaker regularization. As shown above, the ‘Best Alpha’ marker (selected alpha) is the most optimal, as it resides at the lowest point of the valley between over and under regularization, ensuring the lowest mean CV error. A complimentary sparsity vs error plot confirms this choice, illustrating that the model achieves its lowest error with only five non-zero coefficients, thereby retaining the most informative predictors, eliminating redundancy. 
+<br>
+![](sp.png)
+
+The sparsity-error analysis shows that the model attains its lowest mean CV error with exactly five active predictors. Keeping (under-regularization) variables or removing (over-regularization) variables results in greater error, providing further evidence that our model has selected the optimal alpha value.
+To demonstrate the value of regularization, we compare these results to an ordinary least squares regression(OLS) model built with the same predictor set and evaluated using identical five-fold cross validation.
+
+OLS Results
+R² on test set: 0.0967
+CV MSE: 0.0549 ± 0.0425
+Lasso Results (for comparison)
+R² on test set: 0.8627614548922112
+CV MSE: 0.0134 ± 0.0084
+
+The pronounced performance gap reflects the OLS model’s susceptibility to multicollinearity and consequent overfitting, which inflate variance and degrade accuracy. By contrast, the Lasso’s regularization selectively retains only the most informative predictors, resulting in ~8.6x explained variance and ~5x lower error. 
+
+
+# Recommendations Based on our Findings
+Our Lasso-regression analysis confirms that York, Springwater, Geneseo, Mount Morris, and North Dansville have the county’s highest overall SVI percentile rankings, primarily driven by households without access to a vehicle and poverty rates. To mitigate these vulnerabilities, we recommend prioritizing first/last mile connections and subsidizing rideshares. First/last mile connections are the portions of an individual’s voyage that cover the distance between that individual’s home and the nearest public transit. For those with high social vulnerability in Livingston County, likely without a household vehicle and impoverished, this could be the hardest obstacle when it comes to traveling. We recommend expanding fixed-route coverage of public transportation, adding demand-responsive micro-shuttles, and upgrading pedestrian and cycling infrastructure. These have been shown to raise transit ridership and reduce generalized travel times in rural areas (Dytckov, S., Persson, J. A., Lorig, F., & Davidsson, P., 2022). This could enable low-income residents to reach employment, health-care, and educational opportunities more effectively. A targeted rideshare-voucher program can provide door-to-door transportation for those who remain beyond practical walking or cycling distance from public transit routes. Empirical evaluations of publicly subsidized ride-hail partnerships such as the Innisfil Transit program in a small Ontario town demonstrate substantial gains in ridership among low-income, vehicle deficient populations (Benaroya, A., Sweet, M., & Mitra, R., 2023). By simultaneously expanding the reach of public transit and offering flexible rideshare support, we believe Livingston County can significantly reduce the overall social vulnerability in its most sensitive areas. 
+
+
+# ***References***
+Castillo, M. (2022, November 16). Poverty in New York City: Social, Demographic and Spatial Characteristics, 1990-2019. CUNY Academic Works. https://academicworks.cuny.edu/clacls_pubs/110/?
+Krieger, N., Van Wye, G., Huynh, M., Waterman, P. D., Maduro, G., Li, W., Gwynn, R. C., Barbot, O., & Bassett, M. T. (2020, July). Structural racism, historical redlining, and risk of preterm birth in New York City, 2013-2017. American journal of public health. https://pmc.ncbi.nlm.nih.gov/articles/PMC7287548/
+
+U.S. Census Bureau. (n.d.). U.S. Census Bureau quickfacts: Bronx County, New York. https://www.census.gov/quickfacts/fact/table/bronxcountynewyork/PST045224
+
+Wetmore, J. B., Chernov, C., Perlman, S. E., & Borrell, L. N. (2021, July 15). Associations of health conditions and health-related determinants with disability among New York City Adult residents. Ethnicity & disease. https://pubmed.ncbi.nlm.nih.gov/34295132/ 
+
+Benaroya, A., Sweet, M., & Mitra, R. (2023). On-demand ride hailing as publicly subsidized mobility: An empirical case study of Innisfil Transit. Case Studies on Transport Policy, 11, 100944. https://www.sciencedirect.com/science/article/abs/pii/S2213624X22002449?via%3Dihb
+
+Dytckov, S., Persson, J. A., Lorig, F., & Davidsson, P. (2022). Potential Benefits of Demand Responsive Transport in Rural Areas: A Simulation Study in Lolland, Denmark. Sustainability, 14(6), 3252. https://www.mdpi.com/2071-1050/14/6/3252

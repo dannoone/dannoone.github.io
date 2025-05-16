@@ -1,0 +1,263 @@
+---
+title: "DANL 310 | Maps with df and Google Maps"
+toc: True
+author: 'Daniel Noone'
+date: '2025-04-16'
+categories: ['Notes', 'ggplot', 'Maps']
+---
+
+# Using Google Maps API to get GMaps Vizs
+```{r}
+library(tidyverse)
+library(ggmap)
+library(gmapsdistance)
+library(maps)
+library(ggthemes)
+library(ggrepel)
+google_api <- "AIzaSyA3GEXp7zdSJBAhq8fw30f5z-STVFrZSa0"
+register_google(google_api) # for the ggmap package
+set.api.key(google_api)     # for the gmapsdistance package
+```
+
+```{r}
+NYC_Map <- get_map("New York City", 
+                   source = "google", 
+                   api_key = apiKey, 
+                   zoom = 10)
+
+ggmap(NYC_Map) +
+  theme_map() 
+```
+
+```{r}
+ROC_Map <- get_map("Rochester, NY", 
+                   source = "google", 
+                   api_key = apiKey, 
+                   zoom = 9) # the larger value, the more zoom-in
+
+ggmap(ROC_Map) +
+  theme_map()
+```
+
+```{r}
+Geneseo_Map <- get_map("Geneseo, NY",
+                       source = "google",
+                       api_key = apiKey,
+                       zoom = 14) 
+
+locations <- geocode(
+  c("South Hall, Geneseo, NY", 
+    "Newton Hall, Geneseo, NY")
+)
+
+locations <- locations |>
+  mutate(label = c("South Hall", "Newton Hall"))
+
+ggmap(Geneseo_Map) + 
+  geom_point(data = locations, size = 1, alpha = .5) +
+  geom_text_repel(data = locations, 
+                  aes(label = label),
+                  box.padding = 1.75) +
+  theme_map()
+```
+
+## Custom fonts with showtext
+- Enables google fonts in R plots
+```{r}
+library(showtext)
+font_add_google("Roboto", "roboto")
+font_add_google("Lato", "lato")
+font_add_google("Poppins", "poppins")
+font_add_google("Nunito", "nunito")
+font_add_google("Annie Use Your Telescope", "annie")
+font_add_google("Pacifico", "pacifico")
+showtext_auto()  # Enables Google fonts in R plots.
+```
+```{r}
+ggmap(Geneseo_Map) + 
+  geom_point(data = locations, size = 1, alpha = .5) +
+  geom_text_repel(data = locations, 
+                  aes(label = label),
+                  family = "pacifico",
+                  box.padding = 1.75) +
+  theme_map()
+```
+
+## Adding Routes
+- `route()`: calculates route between two addresses using GMaps directions
+- `mode`: Type of travel (walking, driving, bicycling, transit)
+- `geom_path()`: draws route line from route_df coordinates
+- `geom_point()`: makes start and end points
+```{r}
+route_df <- route(
+  from = "South Hall, Geneseo, NY",
+  to   = "Newton Hall, Geneseo, NY",
+  mode = "walking",
+  structure = "route"  # returns points along the path 
+)
+
+ggmap(Geneseo_Map) +
+  geom_path(data = route_df, 
+            aes(x = lon, y = lat), 
+            color = "#1C4982", size = 2, 
+            lineend = "round") +  # round, butt, square
+  geom_point(data = locations, 
+             aes(x = lon, y = lat), 
+             size = 2, color = "darkred") +
+  geom_text_repel(data = locations, 
+                  aes(x = lon, y = lat, label = label),
+                  family = "nunito", 
+                  box.padding = 1.75) +
+  theme_map()
+```
+
+## Different Map Types
+```{r}
+# Available maptype options:
+# "roadmap", "satellite", "terrain", "hybrid"
+Geneseo_Map_Hybrid <- get_map("Geneseo, NY",
+                              source = "google",
+                              api_key = apiKey,
+                              zoom = 14, 
+                              maptype = "hybrid")
+
+ggmap(Geneseo_Map_Hybrid) +
+  geom_path(data = route_df, 
+            aes(x = lon, y = lat), 
+            color = "#1C4982", 
+            size = 2, 
+            lineend = "round",  # round, butt, square
+            arrow = arrow() # Arrow option
+            ) +  
+  geom_point(data = locations, 
+             aes(x = lon, y = lat), 
+             size = 2, color = "darkred") +
+  geom_text_repel(data = locations, 
+                  aes(x = lon, y = lat, label = label),
+                  family = "nunito", 
+                  box.padding = 1.75) +
+  theme_map()
+```
+
+## Multiple Markers w/ Custom Icons
+```{r}
+library(ggimage)
+
+# Let's suppose we have an icon URL
+icon_url <- "https://bcdanl.github.io/lec_figs/marker-icon-red.png"
+
+ggmap(Geneseo_Map) +
+  geom_image(data = locations,
+             aes(x = lon, y = lat, image = icon_url),
+             size = 0.05) +  # tweak size
+  geom_text_repel(data = locations, 
+                  aes(label = label),
+                  box.padding = 1.75) +
+  theme_map()
+```
+
+# Classwork 9
+```{r}
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(ggmap)
+library(sf)
+```
+
+## Q1
+```{r}
+# GeoPackage file (.gkpg), a modern format for map data
+nyc_zips_sf <- st_read("https://bcdanl.github.io/data/nyc_zips_sf.gkpg")  # sf format
+nyc_dog_bites <- read_csv("https://bcdanl.github.io/data/nyc_dog_bites_all.csv") 
+nyc_dog_license <- read_csv(
+  'https://bcdanl.github.io/data/nyc_dog_license.csv')
+```
+
+```{r}
+db <- nyc_dog_bites %>% 
+  group_by(zip_code) %>% 
+  summarise(n_bites = n()) %>% 
+  filter(zip_code %in% nyc_zips_sf$zip_code)
+
+ls <- nyc_dog_license %>% 
+  group_by(zip_code) %>% 
+  summarise(n_dogs = n()) %>% 
+  filter(zip_code %in% nyc_zips_sf$zip_code)
+
+tot <- left_join(ls, db, by = 'zip_code') %>% 
+  mutate(n_bites = ifelse(is.na(n_bites), 0, n_bites))
+
+tot <- tot %>% 
+  mutate(perc = n_bites/n_dogs)
+
+full <- left_join(nyc_zips_sf, tot, by = 'zip_code')
+
+ggplot()+
+  geom_sf(color = 'gray60', data = full, aes(fill = perc))+
+  scale_fill_viridis_c(option = 'B')+
+  theme_map()+
+  theme(legend.position = 'top')
+```
+
+## Q2
+```{r}
+route1 <- route(
+  from = "Central Park, NYC",
+  to   = "Empire State Building, NYC",
+  mode = "driving",
+  structure = "route"
+)
+
+route2 <- route(
+  from = "Empire State Building, NYC",
+  to   = "Times Square, NYC",
+  mode = "driving",
+  structure = "route"
+)
+
+route3 <- route(
+  from = "Times Square, NYC",
+  to   = "Central Park, NYC",
+  mode = "driving",
+  structure = "route"
+)
+```
+```{r}
+NYC_Map <- get_map("Manhattan, NY", 
+                   source = "google", 
+                   api_key = apiKey, 
+                   zoom = 13)
+
+locations <- geocode(
+  c("Central Park, NYC", 
+    "Empire State Building, NY",
+    "Times Square, NYC")
+)
+
+locations <- locations |>
+  mutate(label = c("Central Park", "Empire State", "Times Square"))
+
+ggmap(NYC_Map) +
+  geom_path(data = route1, 
+            aes(x = lon, y = lat), 
+            color = "red", size = 2, 
+            lineend = "round") + 
+  geom_path(data = route2, 
+            aes(x = lon, y = lat), 
+            color = "blue", size = 2, 
+            lineend = "round")+
+  geom_path(data = route3, 
+            aes(x = lon, y = lat), 
+            color = "green", size = 2, 
+            lineend = "round")+
+geom_point(data = locations, 
+             aes(x = lon, y = lat), 
+             size = 2, color = "darkred") +
+  geom_text_repel(data = locations, 
+                  aes(x = lon, y = lat, label = label),
+                  family = "nunito", 
+                  box.padding = 1.75, color = 'navy') +
+  theme_map()
+```
+
