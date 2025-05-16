@@ -1,0 +1,160 @@
+---
+title: "SVI in Livingston County vs. NYS"
+author: "Daniel Noone"
+editor: source
+format: dashboard
+---
+# Theme Overview
+
+```{r}
+library(tidyverse)
+library(ggthemes)
+library(reshape2)
+svi <-  read.csv("C:\\Users\\noone\\OneDrive\\Documents\\School\\SUNY Geneseo\\Classes\\Spring 2025\\DANL499\\SVI2022_NEWYORK_tract.csv")
+
+svi_clean <- svi %>%
+  mutate(RPL_THEME1 = ifelse(RPL_THEME1 == -999, NA, RPL_THEME1),
+         RPL_THEME2 = ifelse(RPL_THEME2 == -999, NA, RPL_THEME2),
+         RPL_THEME3 = ifelse(RPL_THEME3 == -999, NA, RPL_THEME3),
+         RPL_THEME4 = ifelse(RPL_THEME4 == -999, NA, RPL_THEME4),
+         RPL_THEMES = ifelse(RPL_THEMES == -999, NA, RPL_THEMES))
+
+
+liv_avg <- svi_clean %>%
+  filter(COUNTY == "Livingston County") %>%
+  summarize(
+    livingston_RPL_THEME1 = mean(RPL_THEME1, na.rm = TRUE),
+    livingston_RPL_THEME2 = mean(RPL_THEME2, na.rm = TRUE),
+    livingston_RPL_THEME3 = mean(RPL_THEME3, na.rm = TRUE),
+    livingston_RPL_THEME4 = mean(RPL_THEME4, na.rm = TRUE),
+    livingston_RPL_THEMES = mean(RPL_THEMES, na.rm = TRUE)
+  )
+
+
+nys_avg <- svi_clean %>%
+  summarize(
+    nys_RPL_THEME1 = mean(RPL_THEME1, na.rm = TRUE),
+    nys_RPL_THEME2 = mean(RPL_THEME2, na.rm = TRUE),
+    nys_RPL_THEME3 = mean(RPL_THEME3, na.rm = TRUE),
+    nys_RPL_THEME4 = mean(RPL_THEME4, na.rm = TRUE),
+    nys_RPL_THEMES = mean(RPL_THEMES, na.rm = TRUE)
+  )
+
+
+comp_df <- bind_cols(liv_avg, nys_avg)
+
+summary <- svi_clean %>%
+  summarise(
+    T1 = mean(RPL_THEME1, na.rm = TRUE),
+    T2 = mean(RPL_THEME2, na.rm = TRUE),
+    T3 = mean(RPL_THEME3, na.rm = TRUE),
+    T4 = mean(RPL_THEME4, na.rm = TRUE),
+    COMP = mean(RPL_THEMES, na.rm = TRUE)
+  )
+
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(knitr)
+kable(summary, caption = "Livingston County Theme Averages")
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Theme 1 (Socioeconomic Status)"
+
+list(
+  icon = "money-bill",
+  color = "success",
+  value = paste0(round(comp_df$livingston_RPL_THEME1,2))
+)
+
+```
+
+```{r}
+#| content: valuebox
+#| title: "Theme 2 (Household Characteristics)"
+
+
+list(
+  icon = "home",
+  color = "primary",
+  value = paste0(round(comp_df$livingston_RPL_THEME2,2))
+)
+
+```
+
+```{r}
+#| content: valuebox
+#| title: "Theme 3 (Racial/Ethnic Minority Status)"
+
+
+list(
+  icon = "globe",
+  color = "secondary",
+  value = paste0(round(comp_df$livingston_RPL_THEME3,2))
+)
+
+```
+
+```{r}
+#| content: valuebox
+#| title: "Theme 4 (Transportation and Housing)"
+
+
+list(
+  icon = "car-side",
+  color = "warning",
+  value = paste0(round(comp_df$livingston_RPL_THEME4,2))
+)
+
+```
+
+
+```
+
+# Plots
+
+```{r}
+#| title: Correlation Between SVI Themes
+
+
+
+
+theme_corr <- svi %>% 
+  select(SPL_THEME1, SPL_THEME2, SPL_THEME3, SPL_THEME4) %>%
+  cor(use = "pairwise.complete.obs")
+
+
+melted_corr <- melt(theme_corr)
+
+
+ggplot(melted_corr, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  labs(title = "Matrix of Correlations Between SVI Themes", x = "", y = "") +
+  theme_minimal()
+```
+
+```{r}
+#| title: Estimated Population of Surrounding Counties
+
+counties <- c('Monroe County', 'Livingston County', 'Wayne County', 'Yates County', 'Genesee County')
+popu <- svi %>% 
+  filter(COUNTY %in% counties) %>% 
+  group_by(COUNTY) %>% 
+  summarise(pop = sum(E_TOTPOP)) %>% 
+  mutate(COUNTY = fct_reorder(COUNTY, pop))
+
+ggplot(popu,
+       mapping = aes(x = COUNTY, y = pop), stat = 'identity')+
+  geom_col()
+```
+
+

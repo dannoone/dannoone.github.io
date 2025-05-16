@@ -13,6 +13,8 @@ website:
         href: danl_310.qmd
       - text: 'DANL320'
         href: danl_320.qmd
+      - text: 'DANL 310 Dashboard'
+        href: dashboard.qmd
   page-footer: 
     center: "Powered with GitHub, Quarto and Rstudio<br>© Daniel Noone, 2023"
 
